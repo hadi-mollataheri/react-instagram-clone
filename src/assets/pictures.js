@@ -5,8 +5,10 @@ import img2 from './img2.png';
 import img3 from './img3.png';
 import img4 from './img4.png';
 import logo from './logo.png';
-import playstore from './playstore.png';
+import logoColor from './logo-color.png';
+import playStore from './playstore.png';
 import profilePicture from './profilePicture.jpg';
+import microsoft from './microsoft.png';
 
 const PICTURES = {
   auth,
@@ -16,8 +18,10 @@ const PICTURES = {
   img3,
   img4,
   logo,
-  playstore,
+  logoColor,
+  playStore,
   profilePicture,
+  microsoft,
 };
 
 export default PICTURES;
