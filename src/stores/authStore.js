@@ -1,8 +1,15 @@
 import { create } from 'zustand';
+import { createSelectors } from './create-selectors';
 
-export const useAuthStore = create((set) => ({
+const useAuthStore = create((set) => ({
   emailInput: '',
-  updateEmail: (userInput) => set(() => ({ emailInput: userInput })),
+  updateEmailInput: (userInput) => set(() => ({ emailInput: userInput })),
   passwordInput: '',
   updatePasswordInput: (userInput) => set(() => ({ passwordInput: userInput })),
+  showPassword: false,
+  updateShowPassword: () =>
+    set((state) => ({ showPassword: !state.showPassword })),
 }));
+
+// TODO: Use selectors for using states
+export const useAuthStoreSelectors = createSelectors(useAuthStore);
