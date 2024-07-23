@@ -1,5 +1,6 @@
 import PICTURES from '../assets/pictures';
 import AuthForm from '../components/AuthForm/AuthForm';
+import { Outlet } from 'react-router-dom';
 const Authentication = () => {
   return (
     <div className='flex min-h-screen items-start justify-center gap-5 pb-10 pt-1'>
@@ -11,6 +12,7 @@ const Authentication = () => {
       />
       {/* Login form */}
       <AuthForm />
+      <Outlet />
     </div>
   );
 };
