@@ -3,22 +3,23 @@ import PICTURES from '../assets/pictures.js';
 import { Button } from '@chakra-ui/react';
 import { Eye, EyeSlash } from '@phosphor-icons/react';
 import { handleSignUp } from '../utilities/supabase-apiCalls.js';
-import { useAuthStoreSelectors } from '../stores/authStore.js';
+import { useUserStoreSelectors } from '../stores/user-store.js';
 
 const EmailSignUp = () => {
-  // State for email input element
-  const emailInput = useAuthStoreSelectors.use.emailInput();
-  // updateEmailInput is a handler for input that updates the emailInput state
-  const updateEmailInput = useAuthStoreSelectors.use.updateEmailInput();
-  // State for password input element
-  const passwordInput = useAuthStoreSelectors.use.passwordInput();
-  // updatePasswordInput is a handler for input that updates the passwordInput state
-  const updatePasswordInput = useAuthStoreSelectors.use.updatePasswordInput();
-  const showPassword = useAuthStoreSelectors.use.showPassword();
-  const updateShowPassword = useAuthStoreSelectors.use.updateShowPassword();
+  const userEmail = useUserStoreSelectors.use.userEmail();
+  const updateUserEmail = useUserStoreSelectors.use.updateUserEmail();
+  const userPassword = useUserStoreSelectors.use.userPassword();
+  const updateUserPassword = useUserStoreSelectors.use.updateUserPassword();
+  const userFullName = useUserStoreSelectors.use.userFullName();
+  const updateUserFullName = useUserStoreSelectors.use.updateUserFullName();
+  const username = useUserStoreSelectors.use.username();
+  const updateUsername = useUserStoreSelectors.use.updateUsername();
+  // State for show password button
+  const showPassword = useUserStoreSelectors.use.showPassword();
+  const updateShowPassword = useUserStoreSelectors.use.updateShowPassword();
 
   return (
-    <div id='emailSignUp-container' className='scale-90 flex-col'>
+    <div id='emailSignUp-container' className='mt-1 scale-90'>
       {/* Logo and Email log in container */}
       <div className='mx-auto flex w-[350px] flex-col justify-start gap-4 border p-5'>
         {/* Instagram logo */}
@@ -27,11 +28,29 @@ const EmailSignUp = () => {
         <form onSubmit={() => {}} className='flex flex-col justify-start gap-4'>
           <input
             type='email'
-            value={emailInput}
-            onChange={({ target }) => updateEmailInput(target.value)}
+            value={userEmail}
+            onChange={({ target }) => updateUserEmail(target.value)}
             required
             aria-required='true'
             placeholder='Email'
+            className='rounded-md bg-zinc-900 p-2 focus:outline-none'
+          ></input>
+          <input
+            type='text'
+            value={userFullName}
+            onChange={({ target }) => updateUserFullName(target.value)}
+            required
+            aria-required='true'
+            placeholder='Full Name'
+            className='rounded-md bg-zinc-900 p-2 focus:outline-none'
+          ></input>
+          <input
+            type='text'
+            value={username}
+            onChange={({ target }) => updateUsername(target.value)}
+            required
+            aria-required='true'
+            placeholder='Username'
             className='rounded-md bg-zinc-900 p-2 focus:outline-none'
           ></input>
           <div
@@ -40,8 +59,8 @@ const EmailSignUp = () => {
           >
             <input
               type={showPassword ? 'text' : 'password'}
-              value={passwordInput}
-              onChange={({ target }) => updatePasswordInput(target.value)}
+              value={userPassword}
+              onChange={({ target }) => updateUserPassword(target.value)}
               aria-label='Password'
               required
               aria-required='true'

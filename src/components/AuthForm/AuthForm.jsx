@@ -1,21 +1,22 @@
 import { Link } from 'react-router-dom';
 import PICTURES from '../../assets/pictures.js';
 import { Button } from '@chakra-ui/react';
-import { useAuthStoreSelectors } from '../../stores/authStore.js';
+import { useUserStoreSelectors } from '../../stores/user-store.js';
 import { Eye, EyeSlash } from '@phosphor-icons/react';
 import { handleSignUp } from '../../utilities/supabase-apiCalls.js';
 
 function AuthForm() {
   // State for email input element
-  const emailInput = useAuthStoreSelectors.use.emailInput();
+  const userEmail = useUserStoreSelectors.use.userEmail();
   // updateEmailInput is a handler for input that updates the emailInput state
-  const updateEmailInput = useAuthStoreSelectors.use.updateEmailInput();
+  const updateUserEmail = useUserStoreSelectors.use.updateUserEmail();
   // State for password input element
-  const passwordInput = useAuthStoreSelectors.use.passwordInput();
+  const userPassword = useUserStoreSelectors.use.userPassword();
   // updatePasswordInput is a handler for input that updates the passwordInput state
-  const updatePasswordInput = useAuthStoreSelectors.use.updatePasswordInput();
-  const showPassword = useAuthStoreSelectors.use.showPassword();
-  const updateShowPassword = useAuthStoreSelectors.use.updateShowPassword();
+  const updateUserPassword = useUserStoreSelectors.use.updateUserPassword();
+  // State for show password button
+  const showPassword = useUserStoreSelectors.use.showPassword();
+  const updateShowPassword = useUserStoreSelectors.use.updateShowPassword();
 
   return (
     <div id='authPage-container' className='scale-90'>
@@ -27,8 +28,8 @@ function AuthForm() {
         <form onSubmit={() => {}} className='flex flex-col justify-start gap-4'>
           <input
             type='email'
-            value={emailInput}
-            onChange={({ target }) => updateEmailInput(target.value)}
+            value={userEmail}
+            onChange={({ target }) => updateUserEmail(target.value)}
             required
             aria-required='true'
             placeholder='Email'
@@ -40,8 +41,8 @@ function AuthForm() {
           >
             <input
               type={showPassword ? 'text' : 'password'}
-              value={passwordInput}
-              onChange={({ target }) => updatePasswordInput(target.value)}
+              value={userPassword}
+              onChange={({ target }) => updateUserPassword(target.value)}
               aria-label='Password'
               required
               aria-required='true'
