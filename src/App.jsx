@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home.jsx';
-import Authentication from './pages/Authentication.jsx';
+import LogIn from './pages/LogIn.jsx';
 import EmailSignUp from './pages/EmailSignUp.jsx';
 function App() {
   return (
@@ -8,7 +8,7 @@ function App() {
       <div className='text-white'>
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='auth' element={<Authentication />} />
+          <Route path='login' element={<LogIn />} />
           <Route path='emailSignUp' element={<EmailSignUp />} />
         </Routes>
       </div>
