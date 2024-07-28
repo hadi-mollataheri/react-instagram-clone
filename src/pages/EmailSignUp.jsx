@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import PICTURES from '../assets/pictures.js';
 import SignUpForm from '../components/SignUp/SignUpForm.jsx';
 import { useUserStoreSelectors } from '../stores/user-store.js';
-// import { handleSignUp } from '../utilities/supabase-apiCalls.js';
 
 const EmailSignUp = () => {
   const userEmail = useUserStoreSelectors.use.userEmail();

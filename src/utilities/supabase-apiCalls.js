@@ -16,10 +16,10 @@ const publicKey =
 const supabase = createClient(projectUrl, publicKey);
 
 // Sign up users(handler for sing up link)
-export const handleSignUp = async () => {
+export const handleSignUp = async (userEmail, userPassword) => {
   const { user, error } = await supabase.auth.signUp({
-    email: 'example@email.com',
-    password: 'example-password',
+    email: userEmail,
+    password: userPassword,
   });
   if (error) console.error('Error during sign up:', error);
   else window.alert(`Sign up successfully, ${user}`);

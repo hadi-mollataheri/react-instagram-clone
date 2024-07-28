@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Button } from '@chakra-ui/react';
 import { Eye, EyeSlash } from '@phosphor-icons/react';
+import { handleSignUp } from '../../utilities/supabase-apiCalls';
 
 const SignUpForm = (props) => {
   const {
@@ -15,8 +16,14 @@ const SignUpForm = (props) => {
     showPassword,
     updateShowPassword,
   } = props;
+
+  const handleSignUpClick = (event) => {
+    event.preventDefault();
+    handleSignUp(userEmail, userPassword);
+  };
+
   return (
-    <form className='flex flex-col justify-start gap-4'>
+    <div className='flex flex-col justify-start gap-4'>
       <input
         type='email'
         value={userEmail}
@@ -74,10 +81,15 @@ const SignUpForm = (props) => {
           )}
         </div>
       </div>
-      <Button aria-label='submit' colorScheme='blue' size='md' fontWeight={600}>
+      <Button
+        onClick={handleSignUpClick}
+        colorScheme='blue'
+        size='md'
+        fontWeight={600}
+      >
         Sign up
       </Button>
-    </form>
+    </div>
   );
 };
 
