@@ -19,7 +19,7 @@ function LogIn() {
   return (
     <div
       id='logIn-container'
-      className='relative -top-5 flex min-h-screen scale-95 items-center justify-center gap-5'
+      className='relative -top-5 flex min-h-screen items-center justify-center gap-5'
     >
       {/* Instagram sample picture to the left just for big screens */}
       <img

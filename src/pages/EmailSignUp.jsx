@@ -19,7 +19,7 @@ const EmailSignUp = () => {
   return (
     <div id='emailSignUp-container' className='mt-1 min-h-screen scale-90'>
       {/* Logo and Email log in container */}
-      <div className='mx-auto flex w-[350px] flex-col justify-start gap-4 border p-5'>
+      <div className='relative -top-6 mx-auto flex w-[350px] flex-col justify-start gap-4 border p-5'>
         {/* Instagram logo */}
         <img src={PICTURES.logoColor} className='h-[140px] object-contain' />
         {/* Email sign up form */}
