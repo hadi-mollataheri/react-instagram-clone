@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Button } from '@chakra-ui/react';
 import { Eye, EyeSlash } from '@phosphor-icons/react';
-import { handleSignUp } from '../../utilities/supabase-apiCalls';
+import { handleSignUp, updateProfileForSignUp } from '../../utilities/supabase-apiCalls';
 
 const SignUpForm = (props) => {
   const {
@@ -17,9 +17,16 @@ const SignUpForm = (props) => {
     updateShowPassword,
   } = props;
 
-  const handleSignUpClick = (event) => {
+  // TODO: create a user state and then use it for 
+  // controlling the sign up function(if user is sign up
+  // then signUp function wont run for him)
+
+  const handleSignUpClick = async (event) => {
     event.preventDefault();
-    handleSignUp(userEmail, userPassword);
+    const user = await handleSignUp(userEmail, userPassword);
+    // Update user full name and username for his profile
+    if (user) {
+      updateProfileForSignUp(userFullName, username)
   };
 
   return (

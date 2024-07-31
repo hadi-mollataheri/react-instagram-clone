@@ -21,6 +21,37 @@ export const handleSignUp = async (userEmail, userPassword) => {
     email: userEmail,
     password: userPassword,
   });
-  if (error) console.error('Error during sign up:', error);
-  else window.alert(`Sign up successfully, ${user}`);
+  if (error) {
+    console.error('Error during sign up:', error);
+    alert(error.error_description || error.message);
+  } else
+    window.alert(
+      `Sign up successfully, Check your email for the verification!`,
+    );
+
+  return user;
+};
+
+// Create a getProfile function that gets the user profile and
+// return an individual user profile data as an object
+export const getProfile = async (user) => {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('full_name', 'username', 'avatar_url', 'bio')
+    .eq('id', user.id)
+    .single();
+  if (error) console.warn('Error getting Profile:', error);
+  else if (data) return data;
+};
+
+export const updateProfileForSignUp = async (userFullName, username) => {
+  const updates = {
+    full_name: userFullName,
+    username: username,
+  };
+  const { error } = await supabase.from('profiles').upsert(updates);
+  if (error) {
+    console.error('Failed updating Profile', error);
+    alert(error.message);
+  }
 };

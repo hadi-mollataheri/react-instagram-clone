@@ -1,5 +1,8 @@
 import { create } from 'zustand';
 import { createSelectors } from './create-selectors';
+import PICTURES from '../assets/pictures';
+
+const defaultProfilePicture = PICTURES.profilePicture;
 
 const useUserStore = create((set) => ({
   userEmail: '',
@@ -13,7 +16,13 @@ const useUserStore = create((set) => ({
   showPassword: false,
   updateShowPassword: () =>
     set((state) => ({ showPassword: !state.showPassword })),
+  userAvatar: defaultProfilePicture,
+  updateUserAvatar: (userImportedPicture) =>
+    set(() => ({
+      userAvatar: userImportedPicture,
+    })),
+  userBio: '',
+  updateUserBio: (userInput) => set(() => ({ userBio: userInput })),
 }));
 
-// TODO: Use selectors for using states
 export const useUserStoreSelectors = createSelectors(useUserStore);
