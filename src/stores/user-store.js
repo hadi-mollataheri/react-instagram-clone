@@ -5,6 +5,8 @@ import PICTURES from '../assets/pictures';
 const defaultProfilePicture = PICTURES.profilePicture;
 
 const useUserStore = create((set) => ({
+  user: null,
+  updateUser: (newUser) => set(() => ({ user: newUser })),
   userEmail: '',
   updateUserEmail: (userInput) => set(() => ({ userEmail: userInput })),
   userPassword: '',

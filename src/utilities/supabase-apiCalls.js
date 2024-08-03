@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 
-const projectUrl = 'https://efwicoxsibqrsuruwkjv.supabase.co';
+const projectUrl = 'https://gylziklaowckktbcufys.supabase.co';
 /*
 **DISCLAIMER**: The Supabase API key provided in this code is intended for
   demonstration purposes only and is associated with a specific project. 
@@ -12,24 +12,51 @@ const projectUrl = 'https://efwicoxsibqrsuruwkjv.supabase.co';
   the associated project. Please respect these guidelines. Thank you.
 */
 const publicKey =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVmd2ljb3hzaWJxcnN1cnV3a2p2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjExNTAyNDAsImV4cCI6MjAzNjcyNjI0MH0.lAtMMZ-Ifnq5gKHs1yYqd1XvylO5ywMPgMRlurMKJSo';
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd5bHppa2xhb3dja2t0YmN1ZnlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjI2NjQ5MzgsImV4cCI6MjAzODI0MDkzOH0.Z61I3csvPrhKOiGRoRCmh4cJdiKxQRbOh-N_Mi4vFo0';
+
 const supabase = createClient(projectUrl, publicKey);
 
 // Sign up users(handler for sing up link)
-export const handleSignUp = async (userEmail, userPassword) => {
-  const { user, error } = await supabase.auth.signUp({
+export const handleSignUp = async (
+  userEmail,
+  userPassword,
+  userFullName,
+  username,
+) => {
+  const { data, error } = await supabase.auth.signUp({
     email: userEmail,
     password: userPassword,
   });
+
+  console.log('Sign up data response:', data); // Log the entire response
+
   if (error) {
     console.error('Error during sign up:', error);
-    alert(error.error_description || error.message);
-  } else
-    window.alert(
-      `Sign up successfully, Check your email for the verification!`,
-    );
+    console.log(error.error_description || error.message);
+    return null;
+  } else {
+    console.log('Signed up user process: successful'); // Log the user object
 
-  return user;
+    // Create a new row for the user in database(Insert primary profile data)
+    const profileData = {
+      id: data.user.id,
+      full_name: userFullName,
+      username: username,
+    };
+
+    const { error: profileError } = await supabase
+      .from('profiles')
+      .insert([profileData]);
+
+    if (profileError) {
+      console.error('Error inserting profile data:', profileError);
+      alert(profileError.message);
+    } else {
+      console.log('Sign up and profile creation successful.');
+    }
+
+    return data.user;
+  }
 };
 
 // Create a getProfile function that gets the user profile and
@@ -42,16 +69,4 @@ export const getProfile = async (user) => {
     .single();
   if (error) console.warn('Error getting Profile:', error);
   else if (data) return data;
-};
-
-export const updateProfileForSignUp = async (userFullName, username) => {
-  const updates = {
-    full_name: userFullName,
-    username: username,
-  };
-  const { error } = await supabase.from('profiles').upsert(updates);
-  if (error) {
-    console.error('Failed updating Profile', error);
-    alert(error.message);
-  }
 };

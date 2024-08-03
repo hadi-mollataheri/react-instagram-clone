@@ -1,32 +1,51 @@
 /* eslint-disable react/prop-types */
 import { Button } from '@chakra-ui/react';
 import { Eye, EyeSlash } from '@phosphor-icons/react';
-import { handleSignUp, updateProfileForSignUp } from '../../utilities/supabase-apiCalls';
+import { handleSignUp, getProfile } from '../../utilities/supabase-apiCalls';
+import { useUserStoreSelectors } from '../../stores/user-store';
 
-const SignUpForm = (props) => {
-  const {
-    userEmail,
-    updateUserEmail,
-    userFullName,
-    updateUserFullName,
-    username,
-    updateUsername,
-    userPassword,
-    updateUserPassword,
-    showPassword,
-    updateShowPassword,
-  } = props;
-
-  // TODO: create a user state and then use it for 
-  // controlling the sign up function(if user is sign up
-  // then signUp function wont run for him)
+const SignUpForm = () => {
+  const user = useUserStoreSelectors.use.user();
+  const updateUser = useUserStoreSelectors.use.updateUser();
+  const userEmail = useUserStoreSelectors.use.userEmail();
+  const updateUserEmail = useUserStoreSelectors.use.updateUserEmail();
+  const userFullName = useUserStoreSelectors.use.userFullName();
+  const updateUserFullName = useUserStoreSelectors.use.updateUserFullName();
+  const username = useUserStoreSelectors.use.username();
+  const updateUsername = useUserStoreSelectors.use.updateUsername();
+  const userPassword = useUserStoreSelectors.use.userPassword();
+  const updateUserPassword = useUserStoreSelectors.use.updateUserPassword();
+  const showPassword = useUserStoreSelectors.use.showPassword();
+  const updateShowPassword = useUserStoreSelectors.use.updateShowPassword();
 
   const handleSignUpClick = async (event) => {
     event.preventDefault();
-    const user = await handleSignUp(userEmail, userPassword);
-    // Update user full name and username for his profile
     if (user) {
-      updateProfileForSignUp(userFullName, username)
+      alert('You already signed up');
+      return;
+    } else {
+      console.log('Calling handleSignUp...');
+
+      try {
+        const newUser = await handleSignUp(
+          userEmail,
+          userPassword,
+          userFullName,
+          username,
+        );
+        // Update user state and inform the user
+        if (newUser) {
+          updateUser(newUser);
+          window.alert(' Sign up successfully!');
+          
+          // const updatedProfile = await getProfile(newUser);
+          // console.log('Updated Profile:', updatedProfile);
+        }
+      } catch (error) {
+        console.error('Error during sign up or profile update process:', error);
+        alert('An error occurred during sign up. Please try again.');
+      }
+    }
   };
 
   return (

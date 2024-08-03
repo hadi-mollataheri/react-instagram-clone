@@ -1,19 +1,9 @@
 import { Link } from 'react-router-dom';
 import PICTURES from '../assets/pictures.js';
 import SignUpForm from '../components/SignUp/SignUpForm.jsx';
-import { useUserStoreSelectors } from '../stores/user-store.js';
 
 const EmailSignUp = () => {
-  const userEmail = useUserStoreSelectors.use.userEmail();
-  const updateUserEmail = useUserStoreSelectors.use.updateUserEmail();
-  const userFullName = useUserStoreSelectors.use.userFullName();
-  const updateUserFullName = useUserStoreSelectors.use.updateUserFullName();
-  const username = useUserStoreSelectors.use.username();
-  const updateUsername = useUserStoreSelectors.use.updateUsername();
-  const userPassword = useUserStoreSelectors.use.userPassword();
-  const updateUserPassword = useUserStoreSelectors.use.updateUserPassword();
-  const showPassword = useUserStoreSelectors.use.showPassword();
-  const updateShowPassword = useUserStoreSelectors.use.updateShowPassword();
+
 
   return (
     <div id='emailSignUp-container' className='mt-1 min-h-screen scale-90'>
@@ -22,18 +12,7 @@ const EmailSignUp = () => {
         {/* Instagram logo */}
         <img src={PICTURES.logoColor} className='h-[140px] object-contain' />
         {/* Email sign up form */}
-        <SignUpForm
-          userEmail={userEmail}
-          updateUserEmail={updateUserEmail}
-          userFullName={userFullName}
-          updateUserFullName={updateUserFullName}
-          username={username}
-          updateUsername={updateUsername}
-          userPassword={userPassword}
-          updateUserPassword={updateUserPassword}
-          showPassword={showPassword}
-          updateShowPassword={updateShowPassword}
-        />
+        <SignUpForm />
       </div>
       {/* Log in */}
       <div className='mx-auto my-4 w-[350px] border p-5 text-center'>
