@@ -1,21 +1,9 @@
 import { Link } from 'react-router-dom';
 import LogInForm from '../components/LogIn/LogInForm.jsx';
 import PICTURES from '../assets/pictures.js';
-import { useUserStoreSelectors } from '../stores/user-store.js';
 // import { handleSignUp } from '../../utilities/supabase-apiCalls.js';
 
 function LogIn() {
-  // State for email input element
-  const userEmail = useUserStoreSelectors.use.userEmail();
-  // updateEmailInput is a handler for input that updates the emailInput state
-  const updateUserEmail = useUserStoreSelectors.use.updateUserEmail();
-  const userPassword = useUserStoreSelectors.use.userPassword();
-  // updatePasswordInput is a handler for input that updates the passwordInput state
-  const updateUserPassword = useUserStoreSelectors.use.updateUserPassword();
-  // State for show password button
-  const showPassword = useUserStoreSelectors.use.showPassword();
-  const updateShowPassword = useUserStoreSelectors.use.updateShowPassword();
-
   return (
     <div
       id='logIn-container'
@@ -33,14 +21,7 @@ function LogIn() {
           {/* Instagram logo */}
           <img src={PICTURES.logoColor} className='h-[140px] object-contain' />
           {/* Email log in form */}
-          <LogInForm
-            userEmail={userEmail}
-            updateUserEmail={updateUserEmail}
-            userPassword={userPassword}
-            updateUserPassword={updateUserPassword}
-            showPassword={showPassword}
-            updateShowPassword={updateShowPassword}
-          />
+          <LogInForm />
           <hr className='my-7 overflow-visible bg-slate-400 text-center after:relative after:-top-[13px] after:bg-black after:px-3 after:content-["OR"]' />
           {/* Google log in */}
           <div className='flex items-center justify-center gap-3'>

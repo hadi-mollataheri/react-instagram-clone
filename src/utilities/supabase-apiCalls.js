@@ -59,6 +59,13 @@ export const handleSignUp = async (
   }
 };
 
+export const handleLogIn = async (userEmail, userPassword) => {
+  const { user, error } = await supabase.auth.signInWithPassword({
+    email: userEmail,
+    password: userPassword,
+  });
+};
+
 // Create a getProfile function that gets the user profile and
 // return an individual user profile data as an object
 export const getProfile = async (user) => {

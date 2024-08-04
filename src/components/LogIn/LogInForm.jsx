@@ -1,18 +1,23 @@
 /* eslint-disable react/prop-types */
 import { Button } from '@chakra-ui/react';
+import { useUserStoreSelectors } from '../../stores/user-store.js';
+
 import { Eye, EyeSlash } from '@phosphor-icons/react';
 
-const LogInForm = (props) => {
-  const {
-    userEmail,
-    updateUserEmail,
-    userPassword,
-    updateUserPassword,
-    showPassword,
-    updateShowPassword,
-  } = props;
+const LogInForm = () => {
+  // State for email input element
+  const userEmail = useUserStoreSelectors.use.userEmail();
+  // updateEmailInput is a handler for input that updates the emailInput state
+  const updateUserEmail = useUserStoreSelectors.use.updateUserEmail();
+  const userPassword = useUserStoreSelectors.use.userPassword();
+  // updatePasswordInput is a handler for input that updates the passwordInput state
+  const updateUserPassword = useUserStoreSelectors.use.updateUserPassword();
+  // State for show password button
+  const showPassword = useUserStoreSelectors.use.showPassword();
+  const updateShowPassword = useUserStoreSelectors.use.updateShowPassword();
+
   return (
-    <form className='flex flex-col justify-start gap-4'>
+    <form onSubmit={() => {}} className='flex flex-col justify-start gap-4'>
       <input
         type='email'
         value={userEmail}
@@ -52,7 +57,13 @@ const LogInForm = (props) => {
           )}
         </div>
       </div>
-      <Button aria-label='submit' colorScheme='blue' size='md' fontWeight={600}>
+      <Button
+        type='submit'
+        aria-label='submit'
+        colorScheme='blue'
+        size='md'
+        fontWeight={600}
+      >
         Log in
       </Button>
     </form>
