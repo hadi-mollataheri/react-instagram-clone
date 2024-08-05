@@ -36,14 +36,17 @@ const SignUpForm = () => {
         // Update user state and inform the user
         if (newUser) {
           updateUser(newUser);
-          window.alert(' Sign up successfully!');
-          
+          alert(' Sign up successfully!');
+
           // const updatedProfile = await getProfile(newUser);
           // console.log('Updated Profile:', updatedProfile);
         }
       } catch (error) {
-        console.error('Error during sign up or profile update process:', error);
         alert('An error occurred during sign up. Please try again.');
+        console.error(
+          'Error during sign up or profile update process in SignUpForm:',
+          error,
+        );
       }
     }
   };

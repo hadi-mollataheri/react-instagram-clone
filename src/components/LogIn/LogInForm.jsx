@@ -1,10 +1,12 @@
 /* eslint-disable react/prop-types */
 import { Button } from '@chakra-ui/react';
 import { useUserStoreSelectors } from '../../stores/user-store.js';
-
+import { handleLogIn } from '../../utilities/supabase-apiCalls.js';
 import { Eye, EyeSlash } from '@phosphor-icons/react';
 
 const LogInForm = () => {
+  // const user = useUserStoreSelectors.use.user();
+  const updateUser = useUserStoreSelectors.use.updateUser();
   // State for email input element
   const userEmail = useUserStoreSelectors.use.userEmail();
   // updateEmailInput is a handler for input that updates the emailInput state
@@ -16,8 +18,23 @@ const LogInForm = () => {
   const showPassword = useUserStoreSelectors.use.showPassword();
   const updateShowPassword = useUserStoreSelectors.use.updateShowPassword();
 
+  const handleSubmit = (userEmail, userPassword) => {
+    try {
+      console.log('Calling handleLogIn...');
+
+      const user = handleLogIn(userEmail, userPassword);
+      if (user) {
+        updateUser(user);
+        alert('Loged In successfully!');
+      }
+    } catch (error) {
+      alert(`Failed to log in, ${error.message}`);
+      console.error('Error during log in from LogInForm', error);
+    }
+  };
+
   return (
-    <form onSubmit={() => {}} className='flex flex-col justify-start gap-4'>
+    <form onSubmit={handleSubmit} className='flex flex-col justify-start gap-4'>
       <input
         type='email'
         value={userEmail}

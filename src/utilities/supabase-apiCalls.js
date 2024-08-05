@@ -31,8 +31,7 @@ export const handleSignUp = async (
   console.log('Sign up data response:', data); // Log the entire response
 
   if (error) {
-    console.error('Error during sign up:', error);
-    console.log(error.error_description || error.message);
+    console.error('Error during sign up:', error.message);
     return null;
   } else {
     console.log('Signed up user process: successful'); // Log the user object
@@ -64,6 +63,15 @@ export const handleLogIn = async (userEmail, userPassword) => {
     email: userEmail,
     password: userPassword,
   });
+  console.log('User obj from log-in:', user);
+
+  if (error) {
+    console.error('Error during log in:', error.message);
+    return null;
+  } else {
+    console.log('User successfully loged in');
+    return user;
+  }
 };
 
 // Create a getProfile function that gets the user profile and
