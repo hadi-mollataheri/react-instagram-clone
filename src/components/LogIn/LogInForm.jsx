@@ -18,23 +18,24 @@ const LogInForm = () => {
   const showPassword = useUserStoreSelectors.use.showPassword();
   const updateShowPassword = useUserStoreSelectors.use.updateShowPassword();
 
-  const handleSubmit = (userEmail, userPassword) => {
-    try {
-      console.log('Calling handleLogIn...');
+  const handleSubmit = async (e, userEmail, userPassword) => {
+    e.preventDefault();
 
-      const user = handleLogIn(userEmail, userPassword);
-      if (user) {
-        updateUser(user);
-        alert('Loged In successfully!');
-      }
-    } catch (error) {
-      alert(`Failed to log in, ${error.message}`);
-      console.error('Error during log in from LogInForm', error);
+    console.log('Calling handleLogIn...');
+
+    const user = await handleLogIn(userEmail, userPassword);
+    if (user) {
+      console.log('User from log-in in LogInForm:', user);
+      updateUser(user);
+      alert('Logged In successfully!');
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className='flex flex-col justify-start gap-4'>
+    <form
+      onSubmit={(e) => handleSubmit(e, userEmail, userPassword)}
+      className='flex flex-col justify-start gap-4'
+    >
       <input
         type='email'
         value={userEmail}

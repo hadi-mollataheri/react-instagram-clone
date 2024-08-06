@@ -59,18 +59,22 @@ export const handleSignUp = async (
 };
 
 export const handleLogIn = async (userEmail, userPassword) => {
-  const { user, error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await supabase.auth.signInWithPassword({
     email: userEmail,
     password: userPassword,
   });
-  console.log('User obj from log-in:', user);
+  // TODO: user will be undefined
+  console.log('data obj in utility:', data);
+
+  console.log('User obj from log-in in utility:', data.user);
 
   if (error) {
-    console.error('Error during log in:', error.message);
-    return null;
+    console.error('Error during log in:', error);
+    window.alert(`Log in failed: ${error.message}`);
+    // throw new Error('LogIn failed!');
   } else {
-    console.log('User successfully loged in');
-    return user;
+    console.log('User successfully logged in');
+    return data.user;
   }
 };
 
