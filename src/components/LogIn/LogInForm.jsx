@@ -1,22 +1,23 @@
 /* eslint-disable react/prop-types */
 import { Button } from '@chakra-ui/react';
-import { useUserStoreSelectors } from '../../stores/user-store.js';
 import { handleLogIn } from '../../utilities/supabase-apiCalls.js';
 import { Eye, EyeSlash } from '@phosphor-icons/react';
+import { useUserAuthStoreSelector } from '../../stores/userAuth-store.js';
 
 const LogInForm = () => {
   // const user = useUserStoreSelectors.use.user();
-  const updateUser = useUserStoreSelectors.use.updateUser();
+  const updateUser = useUserAuthStoreSelector.use.updateUser();
   // State for email input element
-  const userEmail = useUserStoreSelectors.use.userEmail();
+  const userEmail = useUserAuthStoreSelector.use.userEmail();
   // updateEmailInput is a handler for input that updates the emailInput state
-  const updateUserEmail = useUserStoreSelectors.use.updateUserEmail();
-  const userPassword = useUserStoreSelectors.use.userPassword();
+  const updateUserEmail = useUserAuthStoreSelector.use.updateUserEmail();
+  // State for user password input
+  const userPassword = useUserAuthStoreSelector.use.userPassword();
   // updatePasswordInput is a handler for input that updates the passwordInput state
-  const updateUserPassword = useUserStoreSelectors.use.updateUserPassword();
+  const updateUserPassword = useUserAuthStoreSelector.use.updateUserPassword();
   // State for show password button
-  const showPassword = useUserStoreSelectors.use.showPassword();
-  const updateShowPassword = useUserStoreSelectors.use.updateShowPassword();
+  const showPassword = useUserAuthStoreSelector.use.showPassword();
+  const updateShowPassword = useUserAuthStoreSelector.use.updateShowPassword();
 
   const handleSubmit = async (e, userEmail, userPassword) => {
     e.preventDefault();

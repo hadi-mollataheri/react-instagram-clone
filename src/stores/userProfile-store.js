@@ -4,20 +4,12 @@ import PICTURES from '../assets/pictures';
 
 const defaultProfilePicture = PICTURES.profilePicture;
 
-const useUserStore = create((set) => ({
-  user: null,
-  updateUser: (newUser) => set(() => ({ user: newUser })),
-  userEmail: '',
-  updateUserEmail: (userInput) => set(() => ({ userEmail: userInput })),
-  userPassword: '',
-  updateUserPassword: (userInput) => set(() => ({ userPassword: userInput })),
+const useUserProfileStore = create((set) => ({
   userFullName: '',
   updateUserFullName: (userInput) => set(() => ({ userFullName: userInput })),
   username: '',
   updateUsername: (userInput) => set(() => ({ username: userInput })),
-  showPassword: false,
-  updateShowPassword: () =>
-    set((state) => ({ showPassword: !state.showPassword })),
+
   userAvatar: defaultProfilePicture,
   updateUserAvatar: (userImportedPicture) =>
     set(() => ({
@@ -27,4 +19,4 @@ const useUserStore = create((set) => ({
   updateUserBio: (userInput) => set(() => ({ userBio: userInput })),
 }));
 
-export const useUserStoreSelectors = createSelectors(useUserStore);
+export const useUserProfileStoreSelector = createSelectors(useUserProfileStore);

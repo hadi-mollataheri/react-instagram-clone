@@ -39,7 +39,7 @@ function LogIn() {
         <div className='my-4 border p-5 text-center'>
           <p>
             Don&apos;t have an account?{' '}
-            <Link to='/emailSignUp' className='text-blue-500'>
+            <Link to='/signUp' className='text-blue-500'>
               Sign up
             </Link>
           </p>

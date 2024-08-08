@@ -1,22 +1,24 @@
 /* eslint-disable react/prop-types */
 import { Button } from '@chakra-ui/react';
 import { Eye, EyeSlash } from '@phosphor-icons/react';
-import { handleSignUp, getProfile } from '../../utilities/supabase-apiCalls';
-import { useUserStoreSelectors } from '../../stores/user-store';
+import { handleSignUp } from '../../utilities/supabase-apiCalls';
+import { useUserAuthStoreSelector } from '../../stores/userAuth-store';
+import { useUserProfileStoreSelector } from '../../stores/userProfile-store';
 
 const SignUpForm = () => {
-  const user = useUserStoreSelectors.use.user();
-  const updateUser = useUserStoreSelectors.use.updateUser();
-  const userEmail = useUserStoreSelectors.use.userEmail();
-  const updateUserEmail = useUserStoreSelectors.use.updateUserEmail();
-  const userFullName = useUserStoreSelectors.use.userFullName();
-  const updateUserFullName = useUserStoreSelectors.use.updateUserFullName();
-  const username = useUserStoreSelectors.use.username();
-  const updateUsername = useUserStoreSelectors.use.updateUsername();
-  const userPassword = useUserStoreSelectors.use.userPassword();
-  const updateUserPassword = useUserStoreSelectors.use.updateUserPassword();
-  const showPassword = useUserStoreSelectors.use.showPassword();
-  const updateShowPassword = useUserStoreSelectors.use.updateShowPassword();
+  const user = useUserAuthStoreSelector.use.user();
+  const updateUser = useUserAuthStoreSelector.use.updateUser();
+  const userEmail = useUserAuthStoreSelector.use.userEmail();
+  const updateUserEmail = useUserAuthStoreSelector.use.updateUserEmail();
+  const userFullName = useUserProfileStoreSelector.use.userFullName();
+  const updateUserFullName =
+    useUserProfileStoreSelector.use.updateUserFullName();
+  const username = useUserProfileStoreSelector.use.username();
+  const updateUsername = useUserProfileStoreSelector.use.updateUsername();
+  const userPassword = useUserAuthStoreSelector.use.userPassword();
+  const updateUserPassword = useUserAuthStoreSelector.use.updateUserPassword();
+  const showPassword = useUserAuthStoreSelector.use.showPassword();
+  const updateShowPassword = useUserAuthStoreSelector.use.updateShowPassword();
 
   const handleSignUpClick = async (event) => {
     event.preventDefault();
