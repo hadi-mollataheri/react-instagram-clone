@@ -5,7 +5,7 @@ import { Eye, EyeSlash } from '@phosphor-icons/react';
 import { useUserAuthStoreSelector } from '../../stores/userAuth-store.js';
 
 const LogInForm = () => {
-  // const user = useUserStoreSelectors.use.user();
+  const user = useUserAuthStoreSelector.use.user();
   const updateUser = useUserAuthStoreSelector.use.updateUser();
   // State for email input element
   const userEmail = useUserAuthStoreSelector.use.userEmail();
@@ -23,12 +23,16 @@ const LogInForm = () => {
     e.preventDefault();
 
     console.log('Calling handleLogIn...');
-
-    const user = await handleLogIn(userEmail, userPassword);
     if (user) {
-      console.log('User from log-in in LogInForm:', user);
-      updateUser(user);
-      alert('Logged In successfully!');
+      alert('You are already logged in!');
+      return null;
+    } else {
+      const loggedInUser = await handleLogIn(userEmail, userPassword);
+      if (loggedInUser) {
+        console.log('User from log-in in LogInForm:', user);
+        updateUser(loggedInUser);
+        alert('Logged In successfully!');
+      }
     }
   };
 

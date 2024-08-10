@@ -63,7 +63,6 @@ export const handleLogIn = async (userEmail, userPassword) => {
     email: userEmail,
     password: userPassword,
   });
-  // TODO: user will be undefined
   console.log('data obj in utility:', data);
 
   console.log('User obj from log-in in utility:', data.user);
