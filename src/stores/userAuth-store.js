@@ -4,10 +4,6 @@ import { createSelectors } from './create-selectors';
 const useUserAuthStore = create((set) => ({
   user: null,
   updateUser: (newUser) => set(() => ({ user: newUser })),
-  isLoggedIn: false,
-  // TODO: Check the if the returned response has a status object or like it for updating the isLoggedIn
-  updateIsLoggedIn: () =>
-    set(() => ({ isLoggedIn: 'some status or just boolean' })),
   userEmail: '',
   updateUserEmail: (userInput) => set(() => ({ userEmail: userInput })),
   userPassword: '',

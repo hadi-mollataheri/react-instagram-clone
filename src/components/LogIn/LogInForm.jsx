@@ -29,7 +29,7 @@ const LogInForm = () => {
     } else {
       const loggedInUser = await handleLogIn(userEmail, userPassword);
       if (loggedInUser) {
-        console.log('User from log-in in LogInForm:', user);
+        console.log('User from log-in in LogInForm:', loggedInUser);
         updateUser(loggedInUser);
         alert('Logged In successfully!');
       }
