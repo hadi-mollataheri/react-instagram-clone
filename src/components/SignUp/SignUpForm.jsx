@@ -56,6 +56,7 @@ const SignUpForm = () => {
   return (
     <div className='flex flex-col justify-start gap-4'>
       <input
+        id='signUp-email-input'
         type='email'
         value={userEmail}
         onChange={({ target }) => updateUserEmail(target.value)}
@@ -65,6 +66,7 @@ const SignUpForm = () => {
         className='rounded-md bg-zinc-900 p-2 focus:outline-none'
       ></input>
       <input
+        id='signUp-fullName-input'
         type='text'
         value={userFullName}
         onChange={({ target }) => updateUserFullName(target.value)}
@@ -74,6 +76,7 @@ const SignUpForm = () => {
         className='rounded-md bg-zinc-900 p-2 focus:outline-none'
       ></input>
       <input
+        id='signUp-username-input'
         type='text'
         value={username}
         onChange={({ target }) => updateUsername(target.value)}
@@ -87,6 +90,7 @@ const SignUpForm = () => {
         className='flex items-center justify-between rounded-md bg-zinc-900'
       >
         <input
+          id='signUp-password-input'
           type={showPassword ? 'text' : 'password'}
           value={userPassword}
           onChange={({ target }) => updateUserPassword(target.value)}

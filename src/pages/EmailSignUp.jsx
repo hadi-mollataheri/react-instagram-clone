@@ -3,8 +3,6 @@ import PICTURES from '../assets/pictures.js';
 import SignUpForm from '../components/SignUp/SignUpForm.jsx';
 
 const EmailSignUp = () => {
-
-
   return (
     <div id='emailSignUp-container' className='mt-1 min-h-screen scale-90'>
       {/* Logo and Email log in container */}
@@ -18,7 +16,7 @@ const EmailSignUp = () => {
       <div className='mx-auto my-4 w-[350px] border p-5 text-center'>
         <p>
           Have an account?{' '}
-          <Link to='/emailSignUp' className='text-blue-500'>
+          <Link to='/logIn' className='text-blue-500'>
             Log in
           </Link>
         </p>

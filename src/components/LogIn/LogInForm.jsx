@@ -38,10 +38,13 @@ const LogInForm = () => {
 
   return (
     <form
+      id='logIn'
+      name='logIn'
       onSubmit={(e) => handleSubmit(e, userEmail, userPassword)}
       className='flex flex-col justify-start gap-4'
     >
       <input
+        id='login-emailInput'
         type='email'
         value={userEmail}
         onChange={({ target }) => updateUserEmail(target.value)}
@@ -55,6 +58,7 @@ const LogInForm = () => {
         className='flex items-center justify-between rounded-md bg-zinc-900'
       >
         <input
+          id='login-passwordInput'
           type={showPassword ? 'text' : 'password'}
           value={userPassword}
           onChange={({ target }) => updateUserPassword(target.value)}
