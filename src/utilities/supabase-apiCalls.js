@@ -13,10 +13,9 @@ const projectUrl = 'https://gylziklaowckktbcufys.supabase.co';
 */
 const publicKey =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd5bHppa2xhb3dja2t0YmN1ZnlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjI2NjQ5MzgsImV4cCI6MjAzODI0MDkzOH0.Z61I3csvPrhKOiGRoRCmh4cJdiKxQRbOh-N_Mi4vFo0';
-
 const supabase = createClient(projectUrl, publicKey);
 
-// Sign up users(handler for sing up link)
+// Sign up users(Used in handler for sing up link)
 export const handleSignUp = async (
   userEmail,
   userPassword,
@@ -58,6 +57,7 @@ export const handleSignUp = async (
   }
 };
 
+// Log in users
 export const handleLogIn = async (userEmail, userPassword) => {
   const { data, error } = await supabase.auth.signInWithPassword({
     email: userEmail,
@@ -77,8 +77,29 @@ export const handleLogIn = async (userEmail, userPassword) => {
   }
 };
 
-// Create a getProfile function that gets the user profile and
-// return an individual user profile data as an object
+// Create handleGoogleLogIn function
+export const handleGoogleLogIn = async () => {
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+  });
+
+  const session = data.session;
+  const googleToken = session.provider_token;
+  localStorage.setItem('googleToken', googleToken);
+
+  if (error)
+    console.error(
+      'Error during log in with google from handleGoogleLogIn:',
+      error,
+    );
+  else {
+    console.log('User obj from handleGoogleLogIn:', data.user);
+    return data.user;
+  }
+};
+
+// Get user profile (Create a getProfile function that gets the user profile and
+// return an individual user profile data as an object)
 export const getProfile = async (user) => {
   const { data, error } = await supabase
     .from('profiles')

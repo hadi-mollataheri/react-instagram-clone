@@ -25,7 +25,7 @@ const LogInForm = () => {
     console.log('Calling handleLogIn...');
     if (user) {
       alert('You are already logged in!');
-      return null;
+      return;
     } else {
       const loggedInUser = await handleLogIn(userEmail, userPassword);
       if (loggedInUser) {

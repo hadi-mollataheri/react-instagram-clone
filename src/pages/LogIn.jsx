@@ -1,9 +1,27 @@
 import { Link } from 'react-router-dom';
 import LogInForm from '../components/LogIn/LogInForm.jsx';
 import PICTURES from '../assets/pictures.js';
-// import { handleSignUp } from '../../utilities/supabase-apiCalls.js';
+import { handleGoogleLogIn } from '../utilities/supabase-apiCalls.js';
+import { useUserAuthStoreSelector } from '../stores/userAuth-store.js';
 
 function LogIn() {
+  // const user = useUserAuthStoreSelector.use.user();
+  // const updateUser = useUserAuthStoreSelector.use.updateUser();
+
+  // Create a handler for Log in with google button click event
+  const handleLogInWithGoogleClick = async () => {
+    const googleToken = localStorage.getItem('googleToken');
+
+    if (googleToken) {
+      alert('You are already logged in!');
+      return;
+    } else {
+      await handleGoogleLogIn();
+      // updateUser(googleLoggedInUser);
+      alert('Logged In successfully!');
+    }
+  };
+
   return (
     <div
       id='logIn-container'
@@ -30,9 +48,12 @@ function LogIn() {
               alt='Google logo'
               className='h-[30px] w-[30px]'
             />
-            <Link href='#' className='text-blue-500'>
+            <button
+              onClick={handleLogInWithGoogleClick}
+              className='text-blue-500'
+            >
               Log in with Google
-            </Link>
+            </button>
           </div>
         </div>
         {/* Sign up */}
