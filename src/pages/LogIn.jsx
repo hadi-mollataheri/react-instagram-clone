@@ -1,25 +1,31 @@
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import LogInForm from '../components/LogIn/LogInForm.jsx';
 import PICTURES from '../assets/pictures.js';
-import { handleGoogleLogIn } from '../utilities/supabase-apiCalls.js';
-import { useUserAuthStoreSelector } from '../stores/userAuth-store.js';
+import {
+  handleGoogleLogIn,
+  getSession,
+} from '../utilities/supabase-apiCalls.js';
+// import { useUserAuthStoreSelector } from '../stores/userAuth-store.js';
 
 function LogIn() {
-  // const user = useUserAuthStoreSelector.use.user();
-  // const updateUser = useUserAuthStoreSelector.use.updateUser();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const sessionData = await getSession();
+      if (sessionData) {
+        // User is already logged in, redirect to the home page
+        navigate('/');
+      }
+    };
+    checkSession();
+  }, [navigate]);
 
   // Create a handler for Log in with google button click event
   const handleLogInWithGoogleClick = async () => {
-    const googleToken = localStorage.getItem('googleToken');
-
-    if (googleToken) {
-      alert('You are already logged in!');
-      return;
-    } else {
-      await handleGoogleLogIn();
-      // updateUser(googleLoggedInUser);
-      alert('Logged In successfully!');
-    }
+    await handleGoogleLogIn();
+    alert('Logged in successfully!');
   };
 
   return (

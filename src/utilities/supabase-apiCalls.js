@@ -57,6 +57,16 @@ export const handleSignUp = async (
   }
 };
 
+export const getSession = async () => {
+  const { data, error } = await supabase.auth.getSession();
+  if (error) {
+    console.error('Error getting session from handleGoogleLogIn:', error);
+  } else {
+    console.log('Session from getSession:', data.session);
+    return data.session;
+  }
+};
+
 // Log in users
 export const handleLogIn = async (userEmail, userPassword) => {
   const { data, error } = await supabase.auth.signInWithPassword({
@@ -79,23 +89,14 @@ export const handleLogIn = async (userEmail, userPassword) => {
 
 // Create handleGoogleLogIn function
 export const handleGoogleLogIn = async () => {
-  const { data, error } = await supabase.auth.signInWithOAuth({
+  const { _, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
   });
-
-  const session = data.session;
-  const googleToken = session.provider_token;
-  localStorage.setItem('googleToken', googleToken);
-
   if (error)
     console.error(
       'Error during log in with google from handleGoogleLogIn:',
       error,
     );
-  else {
-    console.log('User obj from handleGoogleLogIn:', data.user);
-    return data.user;
-  }
 };
 
 // Get user profile (Create a getProfile function that gets the user profile and
