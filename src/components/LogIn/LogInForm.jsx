@@ -21,7 +21,7 @@ const LogInForm = () => {
 
   const handleSubmit = async (e, userEmail, userPassword) => {
     e.preventDefault();
-
+    // TODO: Use getSession function to stop repetitive log in
     console.log('Calling handleLogIn...');
     if (user) {
       alert('You are already logged in!');

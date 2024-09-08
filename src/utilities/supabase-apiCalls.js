@@ -89,7 +89,7 @@ export const handleLogIn = async (userEmail, userPassword) => {
 
 // Create handleGoogleLogIn function
 export const handleGoogleLogIn = async () => {
-  const { _, error } = await supabase.auth.signInWithOAuth({
+  const { error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
   });
   if (error)
