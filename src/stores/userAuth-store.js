@@ -11,6 +11,9 @@ const useUserAuthStore = create((set) => ({
   showPassword: false,
   updateShowPassword: () =>
     set((state) => ({ showPassword: !state.showPassword })),
+  sessionData: null,
+  updateSessionData: (newSessionData) =>
+    set(() => ({ sessionData: newSessionData })),
 }));
 
 export const useUserAuthStoreSelector = createSelectors(useUserAuthStore);

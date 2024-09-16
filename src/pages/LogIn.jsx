@@ -6,9 +6,12 @@ import {
   handleGoogleLogIn,
   getSession,
 } from '../utilities/supabase-apiCalls.js';
-// import { useUserAuthStoreSelector } from '../stores/userAuth-store.js';
+import { useUserAuthStoreSelector } from '../stores/userAuth-store.js';
 
 function LogIn() {
+  const sessionData = useUserAuthStoreSelector.use.sessionData();
+  const updateSessionData = useUserAuthStoreSelector.use.updateSessionData();
+
   const navigate = useNavigate();
 
   useEffect(() => {
