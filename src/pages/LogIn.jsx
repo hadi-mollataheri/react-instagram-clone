@@ -13,6 +13,17 @@ function LogIn() {
 
   useEffect(() => {
     const checkSession = async () => {
+      // Cant i just use the logic of handling session expiration for both the 1- stopping
+      // the user from repetitive log in or sing in and 2- logging the user out when session
+      // expires?
+      // Also there is no use for useEffect because its just get the session even the user
+      // is not trying to sing in. or not because this useful as part of the logic for
+      // handling session expiration and i want to update this logic so that includes the
+      // handling session expiration and then when each component is mounted the existing of
+      // session and its expiration will be checked so this way user can't sign up or log in
+      // if he already is and also when session expiration time is reached he will be logged out
+      // and then he can log in again
+      // but later i want to handle when user date is already in data base he can't sign up again
       const sessionData = await getSession();
       if (sessionData) {
         // User is already logged in, redirect to the home page
