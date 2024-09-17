@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import LogInForm from '../components/LogIn/LogInForm.jsx';
 import PICTURES from '../assets/pictures.js';
@@ -14,30 +13,19 @@ function LogIn() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const checkSession = async () => {
-      // Cant i just use the logic of handling session expiration for both the 1- stopping
-      // the user from repetitive log in or sing in and 2- logging the user out when session
-      // expires?
-      // Also there is no use for useEffect because its just get the session even the user
-      // is not trying to sing in. or not because this useful as part of the logic for
-      // handling session expiration and i want to update this logic so that includes the
-      // handling session expiration and then when each component is mounted the existing of
-      // session and its expiration will be checked so this way user can't sign up or log in
-      // if he already is and also when session expiration time is reached he will be logged out
-      // and then he can log in again
-      // but later i want to handle when user date is already in data base he can't sign up again
-      const sessionData = await getSession();
+  // Create a handler for Log in with google button click event
+  const handleLogInWithGoogleClick = async () => {
+    const checkSession = () => {
+      const sessionData = getSession();
+      // If session is exist and its time is valid(not expired)
       if (sessionData) {
         // User is already logged in, redirect to the home page
+        window.alert('You are already logged in!');
         navigate('/');
       }
     };
-    checkSession();
-  }, [navigate]);
+    await checkSession();
 
-  // Create a handler for Log in with google button click event
-  const handleLogInWithGoogleClick = async () => {
     await handleGoogleLogIn();
     alert('Logged in successfully!');
   };
