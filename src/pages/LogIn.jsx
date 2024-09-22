@@ -4,6 +4,7 @@ import PICTURES from '../assets/pictures.js';
 import {
   handleGoogleLogIn,
   getSession,
+  checkSessionExpiration,
 } from '../utilities/supabase-apiCalls.js';
 import { useUserAuthStoreSelector } from '../stores/userAuth-store.js';
 
@@ -15,19 +16,18 @@ function LogIn() {
 
   // Create a handler for Log in with google button click event
   const handleLogInWithGoogleClick = async () => {
-    const checkSession = () => {
-      const sessionData = getSession();
-      // If session is exist and its time is valid(not expired)
-      if (sessionData) {
-        // User is already logged in, redirect to the home page
-        window.alert('You are already logged in!');
-        navigate('/');
-      }
-    };
-    await checkSession();
-
-    await handleGoogleLogIn();
-    alert('Logged in successfully!');
+    const sessionData = await getSession();
+    // *** TODO: use the store for the session data and update it
+    const isSessionExpired = await checkSessionExpiration();
+    // If session is exist and its time is valid(not expired)
+    if (sessionData && isSessionExpired === false) {
+      // User is already logged in, redirect to the home page
+      window.alert('You are already logged in!');
+      navigate('/');
+    } else if (!sessionData || isSessionExpired === true) {
+      await handleGoogleLogIn();
+      alert('Logged in successfully!');
+    }
   };
 
   return (

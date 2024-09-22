@@ -67,6 +67,22 @@ export const getSession = async () => {
   }
 };
 
+// checkSessionExpiration returns true if the sessionData is valid
+export const checkSessionExpiration = async () => {
+  const sessionData = await getSession();
+  let isSessionExpired = null;
+  if (sessionData) {
+    setTimeout(() => {
+      console.log('Expiration time has been reached!');
+      isSessionExpired = true;
+      return isSessionExpired;
+    }, 3600000);
+  } else {
+    isSessionExpired = false;
+    return isSessionExpired;
+  }
+};
+
 // Log in users
 export const handleLogIn = async (userEmail, userPassword) => {
   const { data, error } = await supabase.auth.signInWithPassword({
