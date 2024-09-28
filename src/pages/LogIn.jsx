@@ -12,19 +12,31 @@ function LogIn() {
   const sessionData = useUserAuthStoreSelector.use.sessionData();
   const updateSessionData = useUserAuthStoreSelector.use.updateSessionData();
 
+  const sessionExpiration = useUserAuthStoreSelector.use.sessionExpiration();
+  const updateSessionExpiration =
+    useUserAuthStoreSelector.use.updateSessionExpiration();
+
   const navigate = useNavigate();
 
   // Create a handler for Log in with google button click event
   const handleLogInWithGoogleClick = async () => {
-    const sessionData = await getSession();
-    // *** TODO: use the store for the session data and update it
+    const newSessionData = await getSession();
+    updateSessionData(newSessionData);
+    console.log('sessionData from google sign in, in LogIn:', sessionData); // --- TEST ---
+
     const isSessionExpired = await checkSessionExpiration();
+    updateSessionExpiration(isSessionExpired);
+    console.log(
+      'sessionExpiration from google sign in, in LogIn:',
+      sessionExpiration,
+    ); // --- TEST ---
+
     // If session is exist and its time is valid(not expired)
-    if (sessionData && isSessionExpired === false) {
+    if (sessionData && sessionExpiration === false) {
       // User is already logged in, redirect to the home page
       window.alert('You are already logged in!');
       navigate('/');
-    } else if (!sessionData || isSessionExpired === true) {
+    } else if (!sessionData || sessionExpiration === true) {
       await handleGoogleLogIn();
       alert('Logged in successfully!');
     }

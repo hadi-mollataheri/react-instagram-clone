@@ -70,15 +70,24 @@ export const getSession = async () => {
 // checkSessionExpiration returns true if the sessionData is valid
 export const checkSessionExpiration = async () => {
   const sessionData = await getSession();
+  console.log('sessionData from checkSessionExpiration:', sessionData); // --- TEST ---
   let isSessionExpired = null;
   if (sessionData) {
     setTimeout(() => {
       console.log('Expiration time has been reached!');
       isSessionExpired = true;
+      console.log(
+        'isSessionExpired in checkSessionExpiration inside setTimeout, in supabase-apiCall:',
+        isSessionExpired,
+      ); // --- TEST ---
       return isSessionExpired;
     }, 3600000);
   } else {
     isSessionExpired = false;
+    console.log(
+      'isSessionExpired in checkSessionExpiration *after* setTimeout, in supabase-apiCall:',
+      isSessionExpired,
+    ); // --- TEST ---
     return isSessionExpired;
   }
 };
