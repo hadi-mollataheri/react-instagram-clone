@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import LogInForm from '../components/LogIn/LogInForm.jsx';
 import PICTURES from '../assets/pictures.js';
@@ -18,19 +19,38 @@ function LogIn() {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // *** BUG:This or the next useEffect will run constantly for infinite. why why why
+    const fetchAndUpdateSession = async () => {
+      const newSessionData = await getSession();
+      console.log(
+        'newSession from fetchAndUpdateSession on LogIn:',
+        newSessionData,
+      ); // --- TEST ---
+      await updateSessionData(newSessionData);
+      console.log('sessionData from google sign in, in LogIn:', sessionData); // --- TEST ---
+    };
+    fetchAndUpdateSession();
+  }, [sessionData]);
+
+  useEffect(() => {
+    const fetchAndUpdateSessionExpiration = async () => {
+      const isSessionExpired = await checkSessionExpiration();
+      console.log(
+        'isSessionExpired from fetchAndUpdateSessionExpiration in LogIn:',
+        isSessionExpired,
+      ); // --- TEST ---
+      await updateSessionExpiration(isSessionExpired);
+      console.log(
+        'sessionExpiration from google sign in, in LogIn:',
+        sessionExpiration,
+      ); // --- TEST ---
+    };
+    fetchAndUpdateSessionExpiration();
+  }, [sessionExpiration]);
+
   // Create a handler for Log in with google button click event
   const handleLogInWithGoogleClick = async () => {
-    const newSessionData = await getSession();
-    updateSessionData(newSessionData);
-    console.log('sessionData from google sign in, in LogIn:', sessionData); // --- TEST ---
-
-    const isSessionExpired = await checkSessionExpiration();
-    updateSessionExpiration(isSessionExpired);
-    console.log(
-      'sessionExpiration from google sign in, in LogIn:',
-      sessionExpiration,
-    ); // --- TEST ---
-
     // If session is exist and its time is valid(not expired)
     if (sessionData && sessionExpiration === false) {
       // User is already logged in, redirect to the home page
