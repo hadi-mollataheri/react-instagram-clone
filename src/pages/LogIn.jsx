@@ -27,11 +27,13 @@ function LogIn() {
         'newSession from fetchAndUpdateSession on LogIn:',
         newSessionData,
       ); // --- TEST ---
-      await updateSessionData(newSessionData);
-      console.log('sessionData from google sign in, in LogIn:', sessionData); // --- TEST ---
+      if (newSessionData !== sessionData && newSessionData !== null) {
+        await updateSessionData(newSessionData);
+        console.log('sessionData from google sign in, in LogIn:', sessionData); // --- TEST ---
+      }
     };
     fetchAndUpdateSession();
-  }, [sessionData]);
+  }, []);
 
   useEffect(() => {
     const fetchAndUpdateSessionExpiration = async () => {
@@ -40,14 +42,16 @@ function LogIn() {
         'isSessionExpired from fetchAndUpdateSessionExpiration in LogIn:',
         isSessionExpired,
       ); // --- TEST ---
-      await updateSessionExpiration(isSessionExpired);
-      console.log(
-        'sessionExpiration from google sign in, in LogIn:',
-        sessionExpiration,
-      ); // --- TEST ---
+      if (isSessionExpired !== sessionExpiration && isSessionExpired !== null) {
+        await updateSessionExpiration(isSessionExpired);
+        console.log(
+          'sessionExpiration from google sign in, in LogIn:',
+          sessionExpiration,
+        ); // --- TEST ---
+      }
     };
     fetchAndUpdateSessionExpiration();
-  }, [sessionExpiration]);
+  }, []);
 
   // Create a handler for Log in with google button click event
   const handleLogInWithGoogleClick = async () => {
