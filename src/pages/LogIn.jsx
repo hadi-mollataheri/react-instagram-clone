@@ -5,7 +5,6 @@ import PICTURES from '../assets/pictures.js';
 import {
   handleGoogleLogIn,
   getSession,
-  checkSessionExpiration,
 } from '../utilities/supabase-apiCalls.js';
 import { useUserAuthStoreSelector } from '../stores/userAuth-store.js';
 
@@ -13,56 +12,54 @@ function LogIn() {
   const sessionData = useUserAuthStoreSelector.use.sessionData();
   const updateSessionData = useUserAuthStoreSelector.use.updateSessionData();
 
-  const sessionExpiration = useUserAuthStoreSelector.use.sessionExpiration();
-  const updateSessionExpiration =
-    useUserAuthStoreSelector.use.updateSessionExpiration();
+  const sessionExpirationTime =
+    useUserAuthStoreSelector.use.sessionExpirationTime();
+  const updateSessionExpirationTime =
+    useUserAuthStoreSelector.use.updateSessionExpirationTime();
 
   const navigate = useNavigate();
 
+  // Check if the session exist
   useEffect(() => {
-    // *** BUG:This or the next useEffect will run constantly for infinite. why why why
-    const fetchAndUpdateSession = async () => {
-      const newSessionData = await getSession();
-      console.log(
-        'newSession from fetchAndUpdateSession on LogIn:',
-        newSessionData,
-      ); // --- TEST ---
-      if (newSessionData !== sessionData && newSessionData !== null) {
-        await updateSessionData(newSessionData);
-        console.log('sessionData from google sign in, in LogIn:', sessionData); // --- TEST ---
+    const checkSession = async () => {
+      const session = await getSession();
+      // If there is a session
+      if (session) {
+        // Update the session state
+        updateSessionData(session);
+        updateSessionExpirationTime(session.expires_at);
       }
     };
-    fetchAndUpdateSession();
-  }, []);
+    checkSession();
+  }, [updateSessionData, updateSessionExpirationTime]); // *** Caution this dependency might need to be removed ***
 
+  // Check if the session token is expired or not
   useEffect(() => {
-    const fetchAndUpdateSessionExpiration = async () => {
-      const isSessionExpired = await checkSessionExpiration();
-      console.log(
-        'isSessionExpired from fetchAndUpdateSessionExpiration in LogIn:',
-        isSessionExpired,
-      ); // --- TEST ---
-      if (isSessionExpired !== sessionExpiration && isSessionExpired !== null) {
-        await updateSessionExpiration(isSessionExpired);
-        console.log(
-          'sessionExpiration from google sign in, in LogIn:',
-          sessionExpiration,
-        ); // --- TEST ---
+    const checkSessionExpiration = async () => {
+      // Get the current time
+      const currentTime = Date.now();
+      if (currentTime > sessionExpirationTime) {
+        // Set session state to its initial value(null)
+        updateSessionData(null);
       }
     };
-    fetchAndUpdateSessionExpiration();
-  }, []);
+    checkSessionExpiration();
+  }, [sessionExpirationTime, updateSessionData]); // *** Caution this dependency might need to be removed ***
 
-  // Create a handler for Log in with google button click event
-  const handleLogInWithGoogleClick = async () => {
-    // If session is exist and its time is valid(not expired)
-    if (sessionData && sessionExpiration === false) {
-      // User is already logged in, redirect to the home page
-      window.alert('You are already logged in!');
+  // Create handler for the LogIn with Google button and Decide wether user must allowed to log in or redirected to the home page
+  const handleGoogleLogInClick = async () => {
+    if (sessionData) {
+      window.alert('You are already signed in!');
       navigate('/');
-    } else if (!sessionData || sessionExpiration === true) {
+    } else {
+      // Call the utility
       await handleGoogleLogIn();
-      alert('Logged in successfully!');
+      // Update the session
+      const session = await getSession();
+      updateSessionData(session);
+      // Update the session Expiration Time
+      const expirationTime = session.expires_at;
+      updateSessionExpirationTime(expirationTime);
     }
   };
 
@@ -92,10 +89,7 @@ function LogIn() {
               alt='Google logo'
               className='h-[30px] w-[30px]'
             />
-            <button
-              onClick={handleLogInWithGoogleClick}
-              className='text-blue-500'
-            >
+            <button onClick={handleGoogleLogInClick} className='text-blue-500'>
               Log in with Google
             </button>
           </div>
