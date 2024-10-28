@@ -19,36 +19,40 @@ function LogIn() {
 
   const navigate = useNavigate();
 
-  // Check if the session exist
+  // Initialize the session data when the LogIn component mounts
   useEffect(() => {
-    const checkSession = async () => {
+    const initializeSession = async () => {
       const session = await getSession();
-      // If there is a session
+
       if (session) {
-        // Update the session state
         updateSessionData(session);
         updateSessionExpirationTime(session.expires_at);
-      }
-    };
-    checkSession();
-  }, [updateSessionData, updateSessionExpirationTime]); // *** Caution this dependency might need to be removed ***
-
-  // Check if the session token is expired or not
-  useEffect(() => {
-    const checkSessionExpiration = async () => {
-      // Get the current time
-      const currentTime = Date.now();
-      if (currentTime > sessionExpirationTime) {
-        // Set session state to its initial value(null)
+      } else {
         updateSessionData(null);
+        updateSessionExpirationTime(null);
       }
     };
-    checkSessionExpiration();
-  }, [sessionExpirationTime, updateSessionData]); // *** Caution this dependency might need to be removed ***
+    initializeSession();
+  }, [updateSessionData, updateSessionExpirationTime]);
 
   // Create handler for the LogIn with Google button and Decide wether user must allowed to log in or redirected to the home page
   const handleGoogleLogInClick = async () => {
-    if (sessionData) {
+    const currentTime = Date.now();
+    if (currentTime > sessionExpirationTime) {
+      updateSessionData(null);
+      updateSessionExpirationTime(null);
+      window.alert('Session expired. Please log in again.');
+      // Allow the user to log in again
+      await handleGoogleLogIn();
+      // Update the session
+      const session = await getSession();
+      updateSessionData(session);
+      // Update the session Expiration Time
+      const expirationTime = session.expires_at;
+      updateSessionExpirationTime(expirationTime);
+      // TEST // BUG: When use login with google and then tries to login again with going back to the login page it says session expired instead of saying your already logged in
+      console.log('sessionData from handleGoogleLogInClick', sessionData);
+    } else if (sessionData) {
       window.alert('You are already signed in!');
       navigate('/');
     } else {
