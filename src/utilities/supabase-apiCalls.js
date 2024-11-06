@@ -62,7 +62,7 @@ export const getSession = async () => {
   if (error) {
     console.error('Error getting session from handleGoogleLogIn:', error);
   } else {
-    console.log('Session from getSession:', data.session);
+    console.log('Session from getSession in utility:', data.session);
     return data.session;
   }
 };

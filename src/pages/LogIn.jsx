@@ -19,51 +19,30 @@ function LogIn() {
 
   const navigate = useNavigate();
 
-  // Initialize the session data when the LogIn component mounts
   useEffect(() => {
-    const initializeSession = async () => {
-      const session = await getSession();
-
-      if (session) {
-        updateSessionData(session);
-        updateSessionExpirationTime(session.expires_at);
-      } else {
-        updateSessionData(null);
-        updateSessionExpirationTime(null);
-      }
-    };
-    initializeSession();
-  }, [updateSessionData, updateSessionExpirationTime]);
-
-  // Create handler for the LogIn with Google button and Decide wether user must allowed to log in or redirected to the home page
-  const handleGoogleLogInClick = async () => {
-    const currentTime = Date.now();
-    if (currentTime > sessionExpirationTime) {
-      updateSessionData(null);
-      updateSessionExpirationTime(null);
+    const interval = setInterval(() => {
+      updateSessionData(null); // Reset the sessionData
+      localStorage.removeItem('sessionData'); // Remove the sessionData from localStorage
       window.alert('Session expired. Please log in again.');
-      // Allow the user to log in again
-      await handleGoogleLogIn();
-      // Update the session
-      const session = await getSession();
-      updateSessionData(session);
-      // Update the session Expiration Time
-      const expirationTime = session.expires_at;
-      updateSessionExpirationTime(expirationTime);
-      // TEST // BUG: When use login with google and then tries to login again with going back to the login page it says session expired instead of saying your already logged in
-      console.log('sessionData from handleGoogleLogInClick', sessionData);
-    } else if (sessionData) {
+      navigate('/logIn');
+    }, 3600000);
+    return () => clearInterval(interval); // Cleanup function to clear the interval on component unmount
+  }, [updateSessionData, navigate]);
+
+  const handleGoogleLogInClick = async () => {
+    const storedSession = localStorage.getItem('sessionData'); // Retrieve the sessionData from localStorage
+    if (storedSession) {
+      // Alert users that they are already signed in
       window.alert('You are already signed in!');
+      // Redirect them to the home page
       navigate('/');
     } else {
-      // Call the utility
+      // Call the login with google utility function
       await handleGoogleLogIn();
-      // Update the session
+      // Update the session with the new one
       const session = await getSession();
       updateSessionData(session);
-      // Update the session Expiration Time
-      const expirationTime = session.expires_at;
-      updateSessionExpirationTime(expirationTime);
+      localStorage.setItem('sessionData', JSON.stringify(session));
     }
   };
 

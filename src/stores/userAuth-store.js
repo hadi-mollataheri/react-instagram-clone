@@ -21,7 +21,7 @@ const useUserAuthStore = create((set) => ({
 
   sessionExpirationTime: null,
   updateSessionExpirationTime: (expirationTime) => {
-    set(() => ({ sessionExpiration: expirationTime }));
+    set(() => ({ sessionExpirationTime: expirationTime }));
   },
 }));
 
