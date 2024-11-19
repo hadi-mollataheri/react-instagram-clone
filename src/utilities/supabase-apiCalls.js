@@ -59,12 +59,19 @@ export const handleSignUp = async (
 
 export const getSession = async () => {
   const { data, error } = await supabase.auth.getSession();
+
   if (error) {
     console.error('Error getting session from handleGoogleLogIn:', error);
-  } else {
-    console.log('Session from getSession in utility:', data.session);
-    return data.session;
+    return null; // Return null if there's an error
   }
+
+  if (!data.session) {
+    console.warn('No session found in getSession');
+    return null; // Return null if session is not found
+  }
+
+  console.log('Session from getSession in utility:', data.session);
+  return data.session;
 };
 
 // checkSessionExpiration returns true if the sessionData is valid

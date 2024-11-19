@@ -2,47 +2,41 @@ import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import LogInForm from '../components/LogIn/LogInForm.jsx';
 import PICTURES from '../assets/pictures.js';
-import {
-  handleGoogleLogIn,
-  getSession,
-} from '../utilities/supabase-apiCalls.js';
+import { handleGoogleLogIn } from '../utilities/supabase-apiCalls.js';
 import { useUserAuthStoreSelector } from '../stores/userAuth-store.js';
 
 function LogIn() {
   const sessionData = useUserAuthStoreSelector.use.sessionData();
   const updateSessionData = useUserAuthStoreSelector.use.updateSessionData();
 
-  const sessionExpirationTime =
-    useUserAuthStoreSelector.use.sessionExpirationTime();
-  const updateSessionExpirationTime =
-    useUserAuthStoreSelector.use.updateSessionExpirationTime();
-
   const navigate = useNavigate();
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      updateSessionData(null); // Reset the sessionData
-      localStorage.removeItem('sessionData'); // Remove the sessionData from localStorage
-      window.alert('Session expired. Please log in again.');
-      navigate('/logIn');
-    }, 3600000);
-    return () => clearInterval(interval); // Cleanup function to clear the interval on component unmount
-  }, [updateSessionData, navigate]);
+    const authTokenKey = 'sb-gylziklaowckktbcufys-auth-token';
+    const authToken = localStorage.getItem(authTokenKey);
+    if (authToken) {
+      setInterval(() => {
+        localStorage.removeItem('sb-gylziklaowckktbcufys-auth-token'); // Remove the token from local storage
+        window.alert('Session expired. Please log in again.');
+        navigate('/logIn');
+      }, 3600000);
+    }
+  }, [navigate]);
 
   const handleGoogleLogInClick = async () => {
-    const storedSession = localStorage.getItem('sessionData'); // Retrieve the sessionData from localStorage
-    if (storedSession) {
-      // Alert users that they are already signed in
+    // Check for the session data stored by Supabase
+    const authTokenKey = 'sb-gylziklaowckktbcufys-auth-token';
+    const authToken = localStorage.getItem(authTokenKey);
+    if (authToken) {
       window.alert('You are already signed in!');
-      // Redirect them to the home page
       navigate('/');
     } else {
-      // Call the login with google utility function
-      await handleGoogleLogIn();
-      // Update the session with the new one
-      const session = await getSession();
-      updateSessionData(session);
-      localStorage.setItem('sessionData', JSON.stringify(session));
+      try {
+        console.log('Attempting Google login...');
+        await handleGoogleLogIn();
+      } catch (error) {
+        console.error('Error during Google login:', error);
+      }
     }
   };
 
