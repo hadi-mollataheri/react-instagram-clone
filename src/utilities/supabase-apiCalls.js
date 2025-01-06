@@ -105,9 +105,7 @@ export const handleLogIn = async (userEmail, userPassword) => {
     email: userEmail,
     password: userPassword,
   });
-  console.log('data obj in utility:', data);
-
-  console.log('User obj from log-in in utility:', data.user);
+  console.log('data obj in utility in handleLogIn:', data);
 
   if (error) {
     console.error('Error during log in:', error);
@@ -115,7 +113,7 @@ export const handleLogIn = async (userEmail, userPassword) => {
     // throw new Error('LogIn failed!');
   } else {
     console.log('User successfully logged in');
-    return data.user;
+    return data.session;
   }
 };
 

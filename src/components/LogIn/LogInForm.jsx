@@ -1,4 +1,6 @@
 /* eslint-disable react/prop-types */
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
 import { handleLogIn } from '../../utilities/supabase-apiCalls.js';
 import { Eye, EyeSlash } from '@phosphor-icons/react';
@@ -19,19 +21,53 @@ const LogInForm = () => {
   const showPassword = useUserAuthStoreSelector.use.showPassword();
   const updateShowPassword = useUserAuthStoreSelector.use.updateShowPassword();
 
+  const sessionData = useUserAuthStoreSelector.use.sessionData();
+  const updateSessionData = useUserAuthStoreSelector.use.updateSessionData();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Assume this effect runs only once or as determined by the dependency array
+    const authTokenKey = 'sb-gylziklaowckktbcufys-auth-token';
+    const authToken = localStorage.getItem(authTokenKey);
+
+    if (authToken) {
+      updateSessionData(authToken); // Update session data state
+    }
+
+    // Setup interval for clearing authToken and sessionData
+    const interval = setInterval(() => {
+      localStorage.removeItem(authTokenKey);
+      updateSessionData(null);
+      window.alert('Session expired. Please log in again.');
+      navigate('/logIn');
+    }, 3600000); // 1 hour in milliseconds
+
+    // Clear the interval when the component unmounts
+    return () => clearInterval(interval);
+  }, [navigate, updateSessionData]); // *** Removed sessionData and added clearInterval to solve the won't running of setInterval
+
   const handleSubmit = async (e, userEmail, userPassword) => {
     e.preventDefault();
-    // TODO: Use getSession function to stop repetitive log in
-    console.log('Calling handleLogIn...');
-    if (user) {
+    const authTokenKey = 'sb-gylziklaowckktbcufys-auth-token';
+    const prevAuthToken = localStorage.getItem(authTokenKey);
+    updateSessionData(prevAuthToken);
+    if (sessionData) {
       alert('You are already logged in!');
       return;
     } else {
-      const loggedInUser = await handleLogIn(userEmail, userPassword);
-      if (loggedInUser) {
-        console.log('User from log-in in LogInForm:', loggedInUser);
-        updateUser(loggedInUser);
-        alert('Logged In successfully!');
+      try {
+        console.log('Calling handleLogIn...');
+        const newSession = JSON.stringify(
+          await handleLogIn(userEmail, userPassword),
+        );
+        localStorage.setItem(authTokenKey, newSession); // Update the session data with the new session
+        const newAuthToken = localStorage.getItem(authTokenKey);
+        // Change the value of sessionData state with newSession(newAuthToken) that it's type is JSON string
+        updateSessionData(newAuthToken);
+        navigate('//');
+      } catch (error) {
+        console.error('Error during handleLogIn:', error);
       }
     }
   };

@@ -14,26 +14,37 @@ function LogIn() {
   useEffect(() => {
     const authTokenKey = 'sb-gylziklaowckktbcufys-auth-token';
     const authToken = localStorage.getItem(authTokenKey);
-    if (authToken) {
+    if (authToken) updateSessionData(authToken);
+    if (sessionData) {
+      // console.log(
+      //   'sessionData after updating in useEffect for google login:',
+      //   sessionData,
+      // );
       setInterval(() => {
         localStorage.removeItem('sb-gylziklaowckktbcufys-auth-token'); // Remove the token from local storage
+        updateSessionData(null);
         window.alert('Session expired. Please log in again.');
         navigate('/logIn');
       }, 3600000);
     }
-  }, [navigate]);
+  }, [navigate, sessionData, updateSessionData]);
 
   const handleGoogleLogInClick = async () => {
     // Check for the session data stored by Supabase
     const authTokenKey = 'sb-gylziklaowckktbcufys-auth-token';
-    const authToken = localStorage.getItem(authTokenKey);
-    if (authToken) {
+    if (sessionData) {
       window.alert('You are already signed in!');
-      navigate('/');
+      return;
     } else {
       try {
         console.log('Attempting Google login...');
         await handleGoogleLogIn();
+        const newAuthToken = localStorage.getItem(authTokenKey); // Get the new auth token from local storage
+        updateSessionData(newAuthToken);
+        // console.log(
+        //   'sessionData after updating with google auth token:',
+        //   sessionData,
+        // );
       } catch (error) {
         console.error('Error during Google login:', error);
       }
