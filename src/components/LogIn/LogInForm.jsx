@@ -23,11 +23,10 @@ const LogInForm = () => {
 
   const sessionData = useUserAuthStoreSelector.use.sessionData();
   const updateSessionData = useUserAuthStoreSelector.use.updateSessionData();
-
+  console.log('sessionData from LogInForm: ', sessionData); // TEST
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Assume this effect runs only once or as determined by the dependency array
     const authTokenKey = 'sb-gylziklaowckktbcufys-auth-token';
     const authToken = localStorage.getItem(authTokenKey);
 
@@ -35,17 +34,23 @@ const LogInForm = () => {
       updateSessionData(authToken); // Update session data state
     }
 
+    const sessionCheck = () => {
+      if (localStorage.getItem(authTokenKey)) {
+        localStorage.removeItem(authTokenKey);
+        updateSessionData(null);
+        window.alert('Session expired. Please log in again.');
+        navigate('/logIn');
+      }
+    };
+
     // Setup interval for clearing authToken and sessionData
     const interval = setInterval(() => {
-      localStorage.removeItem(authTokenKey);
-      updateSessionData(null);
-      window.alert('Session expired. Please log in again.');
-      navigate('/logIn');
+      sessionCheck();
     }, 3600000); // 1 hour in milliseconds
 
     // Clear the interval when the component unmounts
     return () => clearInterval(interval);
-  }, [navigate, updateSessionData]); // *** Removed sessionData and added clearInterval to solve the won't running of setInterval
+  }, [navigate, updateSessionData]); // Ensuring dependencies are correct
 
   const handleSubmit = async (e, userEmail, userPassword) => {
     e.preventDefault();

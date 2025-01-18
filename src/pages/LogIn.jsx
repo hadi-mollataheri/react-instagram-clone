@@ -15,18 +15,20 @@ function LogIn() {
     const authTokenKey = 'sb-gylziklaowckktbcufys-auth-token';
     const authToken = localStorage.getItem(authTokenKey);
     if (authToken) updateSessionData(authToken);
-    if (sessionData) {
-      // console.log(
-      //   'sessionData after updating in useEffect for google login:',
-      //   sessionData,
-      // );
-      setInterval(() => {
+
+    const sessionCheck = () => {
+      if (localStorage.getItem(authTokenKey)) {
         localStorage.removeItem('sb-gylziklaowckktbcufys-auth-token'); // Remove the token from local storage
         updateSessionData(null);
         window.alert('Session expired. Please log in again.');
         navigate('/logIn');
-      }, 3600000);
-    }
+      }
+    };
+
+    const interval = setInterval(() => {
+      sessionCheck();
+    }, 3600000);
+    return () => clearInterval(interval);
   }, [navigate, sessionData, updateSessionData]);
 
   const handleGoogleLogInClick = async () => {
