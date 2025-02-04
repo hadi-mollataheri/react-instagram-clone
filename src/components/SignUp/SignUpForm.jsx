@@ -1,4 +1,6 @@
 /* eslint-disable react/prop-types */
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
 import { Eye, EyeSlash } from '@phosphor-icons/react';
 import { handleSignUp } from '../../utilities/supabase-apiCalls';
@@ -6,8 +8,10 @@ import { useUserAuthStoreSelector } from '../../stores/userAuth-store';
 import { useUserProfileStoreSelector } from '../../stores/userProfile-store';
 
 const SignUpForm = () => {
-  const user = useUserAuthStoreSelector.use.user();
-  const updateUser = useUserAuthStoreSelector.use.updateUser();
+  // const user = useUserAuthStoreSelector.use.user();
+  // const updateUser = useUserAuthStoreSelector.use.updateUser();
+  const sessionData = useUserAuthStoreSelector.use.sessionData();
+  const updateSessionData = useUserAuthStoreSelector.use.updateSessionData();
   const userEmail = useUserAuthStoreSelector.use.userEmail();
   const updateUserEmail = useUserAuthStoreSelector.use.updateUserEmail();
   const userFullName = useUserProfileStoreSelector.use.userFullName();
@@ -20,11 +24,30 @@ const SignUpForm = () => {
   const showPassword = useUserAuthStoreSelector.use.showPassword();
   const updateShowPassword = useUserAuthStoreSelector.use.updateShowPassword();
 
+  const navigate = useNavigate();
+  // TODOs:
+  // Create a way to stop the user from opening this page early on when this page is going to mount.
+  // Do this by checking if there is user or session, i don't know yet. I can do both with an or(||).
+
+  // Keep the sessionData up to date with the latest authToken
+  useEffect(() => {
+    const authTokenKey = 'sb-gylziklaowckktbcufys-auth-token';
+    const authToken = localStorage.getItem(authTokenKey);
+    if (authToken) {
+      updateSessionData(authToken);
+    }
+  }, [updateSessionData]);
+
   const handleSignUpClick = async (event) => {
     event.preventDefault();
-    if (user) {
+
+    const authTokenKey = 'sb-gylziklaowckktbcufys-auth-token';
+    const prevAuthToken = localStorage.getItem(authTokenKey);
+    updateSessionData(prevAuthToken);
+
+    if (sessionData) {
       alert('You already signed up');
-      return;
+      navigate('/');
     } else {
       console.log('Calling handleSignUp...');
 
@@ -37,11 +60,15 @@ const SignUpForm = () => {
         );
         // Update user state and inform the user
         if (newUser) {
-          updateUser(newUser);
+          localStorage.setItem(authTokenKey, newUser);
+          const newAuthToken = localStorage.getItem(authTokenKey);
+          updateSessionData(newAuthToken);
           alert(' Sign up successfully!');
-
-          // const updatedProfile = await getProfile(newUser);
-          // console.log('Updated Profile:', updatedProfile);
+          navigate('/');
+          updateUserEmail('');
+          updateUserPassword('');
+          updateUserFullName('');
+          updateUsername('');
         }
       } catch (error) {
         alert('An error occurred during sign up. Please try again.');
