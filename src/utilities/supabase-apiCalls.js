@@ -58,12 +58,13 @@ export const handleSignUp = async (
 };
 
 // Use the fetched user data with supabase for stopping the repetitive sign up
-export const checkEmailExistence = (email) => {
+export const checkEmailExistence = async (email) => {
   try {
     const { data, error } = supabase
       .from('users')
       .select('email')
       .eq('email', email); // Filter where email column equals the provided email value. data is an array of rows that match the query condition
+    console.log('data = array of emails in checkEmailExistence:', data); // TEST
     if (error) throw error;
     return data.length > 0; // If there's data, the email exists and it return true, otherwise return false
   } catch (error) {
