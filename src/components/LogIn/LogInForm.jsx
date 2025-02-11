@@ -7,8 +7,6 @@ import { Eye, EyeSlash } from '@phosphor-icons/react';
 import { useUserAuthStoreSelector } from '../../stores/userAuth-store.js';
 
 const LogInForm = () => {
-  const user = useUserAuthStoreSelector.use.user();
-  const updateUser = useUserAuthStoreSelector.use.updateUser();
   // State for email input element
   const userEmail = useUserAuthStoreSelector.use.userEmail();
   // updateEmailInput is a handler for input that updates the emailInput state
@@ -59,7 +57,7 @@ const LogInForm = () => {
     updateSessionData(prevAuthToken);
     if (sessionData) {
       alert('You are already logged in!');
-      return;
+      navigate('/');
     } else {
       try {
         console.log('Calling handleLogIn...');
