@@ -22,7 +22,7 @@ export const handleSignUp = async (
   userFullName,
   username,
 ) => {
-  const { data, error } = await supabase.auth.signUp({
+  const { user, data, error } = await supabase.auth.signUp({
     email: userEmail,
     password: userPassword,
   });
@@ -30,8 +30,11 @@ export const handleSignUp = async (
   console.log('Sign up data response:', data); // Log the entire response
 
   if (error) {
+    // Handle Specific Error Codes if user is already sign up
+    if (error.message === 'User already registered') {
+      return { error: 'User already registered' };
+    }
     console.error('Error during sign up:', error.message);
-    return null;
   } else {
     console.log('Signed up user process: successful'); // Log the user object
 
@@ -47,31 +50,44 @@ export const handleSignUp = async (
       .insert([profileData]);
 
     if (profileError) {
+      if (
+        profileError.message.includes(
+          'duplicate key value violates unique constraint',
+        )
+      ) {
+        return { error: 'Username already taken. Please choose another one.' };
+      }
       console.error('Error inserting profile data:', profileError);
-      alert(profileError.message);
+      return { error: profileError };
     } else {
       console.log('Sign up and profile creation successful.');
     }
 
-    return data.user;
+    return { user };
   }
 };
 
 // Use the fetched user data with supabase for stopping the repetitive sign up
-export const checkEmailExistence = async (email) => {
-  try {
-    const { data, error } = supabase
-      .from('users')
-      .select('email')
-      .eq('email', email); // Filter where email column equals the provided email value. data is an array of rows that match the query condition
-    console.log('data = array of emails in checkEmailExistence:', data); // TEST
-    if (error) throw error;
-    return data.length > 0; // If there's data, the email exists and it return true, otherwise return false
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
+// export const checkEmailExistence = async (email) => {
+//   try {
+//     const { data, error } = await supabase
+//       .from('profiles')
+//       .select('email')
+//       .eq('email', email); // Filter where email column equals the provided email value. data is an array of rows that match the query condition
+//     console.log('data = array of emails in checkEmailExistence:', data); // TEST //BUG: *** The fetched data is undefined
+
+//     if (data)
+//       console.log('data is fetched correctly.'); // TEST
+//     else console.log('data is not fetched correctly.'); // TEST
+
+//     if (error) throw error;
+//     console.log(data.length); // TEST
+//     return data.length > 0; // If there's data, the email exists and it return true, otherwise return false
+//   } catch (error) {
+//     console.error(error);
+//     throw error;
+//   }
+// };
 
 export const getSession = async () => {
   const { data, error } = await supabase.auth.getSession();

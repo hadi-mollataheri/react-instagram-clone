@@ -3,10 +3,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
 import { Eye, EyeSlash } from '@phosphor-icons/react';
-import {
-  handleSignUp,
-  checkEmailExistence,
-} from '../../utilities/supabase-apiCalls';
+import { handleSignUp } from '../../utilities/supabase-apiCalls';
 import { useUserAuthStoreSelector } from '../../stores/userAuth-store';
 import { useUserProfileStoreSelector } from '../../stores/userProfile-store';
 
@@ -22,43 +19,55 @@ const SignUpForm = () => {
   const updateUserPassword = useUserAuthStoreSelector.use.updateUserPassword();
   const showPassword = useUserAuthStoreSelector.use.showPassword();
   const updateShowPassword = useUserAuthStoreSelector.use.updateShowPassword();
+  const sessionData = useUserAuthStoreSelector.use.sessionData();
 
   const navigate = useNavigate();
   // TODOs:
   // Create a way to stop the user from opening this page early on when this page is going to mount.
   // Do this by checking if there is user or session, i don't know yet. I can do both with an or(||).
 
+  useEffect(() => {
+    if (sessionData) {
+      navigate('/');
+    }
+  }, [sessionData, navigate]);
+
   const handleSignUpClick = async (event) => {
     event.preventDefault();
 
     try {
-      // Check if the email already exists
-      const emailExist = await checkEmailExistence(userEmail);
-      if (emailExist) {
-        alert('An account with this email already exists. Please log in.');
-        navigate('/logIn');
-      } else {
-        console.log('Calling handleSignUp...');
-        const newUser = await handleSignUp(
-          userEmail,
-          userPassword,
-          userFullName,
-          username,
-        );
-        // Update user state and inform the user
-        if (newUser) {
-          alert(' Sign up successfully!');
-          navigate('/');
-          // Clear form fields
-          updateUserEmail('');
-          updateUserPassword('');
-          updateUserFullName('');
-          updateUsername('');
+      console.log('Calling handleSignUp...');
+      const { user, error } = await handleSignUp(
+        userEmail,
+        userPassword,
+        userFullName,
+        username,
+      );
+
+      if (error) {
+        if (error === 'Username already taken. Please choose another one.') {
+          alert(error);
+        } else if (error.includes('User already registered')) {
+          alert('An account with this email already exists. Please log in.');
+          navigate('/login');
+        } else {
+          alert('An error occurred during sign up. Please try again.');
+          console.error('Error during sign up:', error);
         }
+      } else if (user) {
+        // Update user state and inform the user
+        alert(' Sign up successfully!');
+        navigate('/');
+
+        // Clear form fields
+        updateUserEmail('');
+        updateUserPassword('');
+        updateUserFullName('');
+        updateUsername('');
       }
     } catch (error) {
-      alert('An error occurred during sign up. Please try again.');
-      console.error('Error during sign up process:', error);
+      console.error('Unhandled error during sign up:', error);
+      alert('An unexpected error occurred. Please try again.');
     }
   };
 
