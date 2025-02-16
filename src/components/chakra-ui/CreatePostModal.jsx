@@ -35,6 +35,9 @@ const CreatePostModal = ({ isOpen, onClose }) => {
     //TODO:Update Your Home Component AND Placeholder for post submission logic
     console.log('Post Text:', postText);
     console.log('Selected Images:', postImages);
+    // Clear the fields
+    updatePostText('');
+    updatePostImages([]);
     onClose();
   };
 

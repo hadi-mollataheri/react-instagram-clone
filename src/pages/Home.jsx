@@ -8,10 +8,19 @@ import {
   MagnifyingGlass,
   HouseLine,
 } from '@phosphor-icons/react';
-import { Menu, MenuButton, MenuList, MenuItem, Button } from '@chakra-ui/react';
-// import { ChevronDownIcon } from '@chakra-ui/icons';
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Button,
+  useDisclosure,
+} from '@chakra-ui/react';
+import CreatePostModal from '../components/chakra-ui/CreatePostModal';
 
 const Home = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <div className='mt-5 sm:grid sm:grid-cols-3 sm:grid-rows-1'>
       <nav className='sm flex items-center justify-between px-5 sm:h-lvh sm:w-52 sm:flex-col sm:items-start sm:justify-start sm:border-r-2 sm:border-r-gray-500'>
@@ -36,7 +45,7 @@ const Home = () => {
                 <Heart size={24} className='mr-1.5' />
                 Notification
               </MenuItem>
-              <MenuItem value='create'>
+              <MenuItem value='create' onClick={onOpen}>
                 <PlusSquare size={24} className='mr-1.5' />
                 Create
               </MenuItem>
@@ -79,10 +88,10 @@ const Home = () => {
               </a>
             </li>
             <li>
-              <a href='#'>
+              <button onClick={onOpen}>
                 <PlusSquare size={32} className='mr-4 inline-block' />
                 Create
-              </a>
+              </button>
             </li>
             <li>
               <a href='#'>
@@ -96,10 +105,10 @@ const Home = () => {
             </li>
           </ul>
 
-          <a href='#'>
+          <button href='#'>
             <SignOut size={32} className='mr-4 inline-block' />
             LogOut
-          </a>
+          </button>
         </div>
       </nav>
 
@@ -115,6 +124,8 @@ const Home = () => {
       >
         Suggestions
       </section>
+
+      <CreatePostModal isOpen={isOpen} onClose={onClose} />
     </div>
   );
 };
