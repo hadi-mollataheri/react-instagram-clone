@@ -47,8 +47,9 @@ const LogInForm = () => {
     }, 3600000); // 1 hour in milliseconds
 
     // Clear the interval when the component unmounts
+    //BUG: The clearInterval is probably stopping the setInterval when we are on other pages
     return () => clearInterval(interval);
-  }, [navigate, updateSessionData]); // Ensuring dependencies are correct
+  }, [navigate, updateSessionData]);
 
   const handleSubmit = async (e, userEmail, userPassword) => {
     e.preventDefault();
