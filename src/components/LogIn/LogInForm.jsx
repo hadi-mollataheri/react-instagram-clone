@@ -47,6 +47,7 @@ const LogInForm = () => {
     }, 3600000); // 1 hour in milliseconds
 
     // Clear the interval when the component unmounts
+
     // return () => clearInterval(interval);
   }, [navigate, updateSessionData]); // Ensuring dependencies are correct
 

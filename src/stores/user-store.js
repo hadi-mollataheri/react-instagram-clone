@@ -25,6 +25,16 @@ const useUserStore = create((set) => ({
     })),
   userBio: '',
   updateUserBio: (userInput) => set(() => ({ userBio: userInput })),
+
+  postText: '',
+  updatePostText: (userInput) =>
+    set(() => ({
+      postText: userInput,
+    })),
+
+  postImages: [],
+  updatePostImages: (userInputImages) =>
+    set(() => ({ postImages: userInputImages })),
 }));
 
 export const useUserStoreSelectors = createSelectors(useUserStore);

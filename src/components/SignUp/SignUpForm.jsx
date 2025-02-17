@@ -26,6 +26,7 @@ const SignUpForm = () => {
   // Create a way to stop the user from opening this page early on when this page is going to mount.
   // Do this by checking if there is user or session, i don't know yet. I can do both with an or(||).
 
+  // If users already logged in, redirect them to the home page
   useEffect(() => {
     if (sessionData) {
       navigate('/');
