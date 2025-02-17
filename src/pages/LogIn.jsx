@@ -25,10 +25,10 @@ function LogIn() {
       }
     };
 
-    const interval = setInterval(() => {
+    /*const interval = */ setInterval(() => {
       sessionCheck();
     }, 3600000);
-    return () => clearInterval(interval);
+    // return () => clearInterval(interval);
   }, [navigate, sessionData, updateSessionData]);
 
   const handleGoogleLogInClick = async () => {

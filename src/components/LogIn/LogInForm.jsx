@@ -42,12 +42,12 @@ const LogInForm = () => {
     };
 
     // Setup interval for clearing authToken and sessionData
-    const interval = setInterval(() => {
+    /*const interval = */ setInterval(() => {
       sessionCheck();
     }, 3600000); // 1 hour in milliseconds
 
     // Clear the interval when the component unmounts
-    return () => clearInterval(interval);
+    // return () => clearInterval(interval);
   }, [navigate, updateSessionData]); // Ensuring dependencies are correct
 
   const handleSubmit = async (e, userEmail, userPassword) => {
