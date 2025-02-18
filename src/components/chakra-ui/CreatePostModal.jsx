@@ -12,6 +12,8 @@ import {
   Textarea,
   Input,
   Image,
+  Center,
+  Flex,
 } from '@chakra-ui/react';
 
 const CreatePostModal = ({ isOpen, onClose }) => {
@@ -56,24 +58,24 @@ const CreatePostModal = ({ isOpen, onClose }) => {
             mb={4}
           />
           {/* File input for image selection */}
+
           <Input
             type='file'
             accept='image/*'
             multiple
+            pt='5px'
             onChange={handleImageChange}
           />
+
           {/* Preview of selected images */}
           {postImages.length > 0 && (
-            <div className='mt-4'>
+            <div className='mt-4 flex flex-wrap'>
               {postImages.map((src, index) => (
-                <Image
+                <img
+                  className='m-2 h-24 w-24 rounded object-cover'
                   key={index}
                   src={src}
                   alt={`Selected ${index}`}
-                  boxSize='100px'
-                  objectFit='cover'
-                  mr={2}
-                  mb={2}
                 />
               ))}
             </div>
@@ -83,7 +85,12 @@ const CreatePostModal = ({ isOpen, onClose }) => {
           <Button variant='outline' mr={3} onClick={onClose}>
             Cancel
           </Button>
-          <Button colorScheme='teal' onClick={handleSubmit}>
+          <Button
+            colorScheme='teal'
+            onClick={handleSubmit}
+            bgColor='pink.400'
+            _hover={{ background: '#DB2796' }}
+          >
             Post
           </Button>
         </ModalFooter>
