@@ -9,6 +9,7 @@ import logoColor from './logo-color.png';
 import playStore from './playstore.png';
 import profilePicture from './profilePicture.jpg';
 import microsoft from './microsoft.png';
+import loading from './loading.jpg';
 
 const PICTURES = {
   auth,
@@ -22,6 +23,7 @@ const PICTURES = {
   playStore,
   profilePicture,
   microsoft,
+  loading,
 };
 
 export default PICTURES;

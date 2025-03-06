@@ -13,7 +13,7 @@ const projectUrl = 'https://gylziklaowckktbcufys.supabase.co';
 */
 const publicKey =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd5bHppa2xhb3dja2t0YmN1ZnlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjI2NjQ5MzgsImV4cCI6MjAzODI0MDkzOH0.Z61I3csvPrhKOiGRoRCmh4cJdiKxQRbOh-N_Mi4vFo0';
-const supabase = createClient(projectUrl, publicKey);
+export const supabase = createClient(projectUrl, publicKey);
 
 // Sign up users(Used in handler for sing up link)
 export const handleSignUp = async (
@@ -135,6 +135,62 @@ export const handleGoogleLogIn = async () => {
       'Error during log in with google from handleGoogleLogIn:',
       error,
     );
+};
+
+//*** WARNING: This function might need to change because it might return the wrong user. Check the comment out version of getting user below
+export const getUser = async () => {
+  // Get the current authenticated user and handle errors
+  try {
+    const { data, error } = await supabase.auth.getUser();
+    if (error) {
+      throw error;
+    } else {
+      return data.user;
+    }
+  } catch (e) {
+    console.error('Error during getting user obj in handleCreatePost:', e);
+    throw e; // Re-throw to let the caller handle it
+  }
+};
+
+export const handleCreatePost = async (postText, postImages) => {
+  try {
+    const user = await getUser();
+    if (!user) {
+      throw new Error(
+        'User not defined, user must be authenticated to create post.',
+      );
+    }
+    // Insert post into the 'posts' table
+    const { error } = await supabase.from('posts').insert({
+      user_id: user.id,
+      content: postText,
+      images: postImages,
+    });
+    if (error) {
+      throw error;
+    }
+  } catch (e) {
+    console.error('Error during post creation in handleCreatePost:', e);
+    throw e; // Re-throw to let the caller handle it
+  }
+};
+
+export const handleGettingPosts = async (user) => {
+  const { data, error } = await supabase
+    .from('posts')
+    .select('content, images')
+    .eq('user_id', user.id);
+
+  if (error) {
+    console.error(
+      'Error during getting user post from handleGettingPosts utility:',
+      error,
+    );
+    throw error;
+  } else {
+    return data;
+  }
 };
 
 // Get user profile (Create a getProfile function that gets the user profile and
