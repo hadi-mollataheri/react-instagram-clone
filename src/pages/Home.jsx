@@ -55,7 +55,9 @@ const Home = () => {
         images: post.images.map((img) => URL.createObjectURL(new Blob([img]))),
       }));
 
-      updateUserPosts(postsWithBlobImgURLs);
+      updateUserPosts(
+        postsWithBlobImgURLs.length > 0 ? postsWithBlobImgURLs : null,
+      );
     };
     getUserPosts();
 
@@ -88,7 +90,7 @@ const Home = () => {
           };
 
           const newPost = transformNewPost(payload.new);
-          const currentPosts = postsRef.current || [];
+          const currentPosts = postsRef.current;
           updateUserPosts([newPost, ...currentPosts]);
         },
       )
@@ -99,6 +101,8 @@ const Home = () => {
       supabase.removeChannel(channel);
     };
   }, [updateUserPosts]);
+
+  console.log('userPosts:', userPosts);
 
   return (
     <div className='mt-5 sm:grid sm:grid-cols-3 sm:grid-rows-1'>

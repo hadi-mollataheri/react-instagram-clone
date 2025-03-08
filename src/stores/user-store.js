@@ -26,7 +26,6 @@ const useUserStore = create((set) => ({
   userBio: '',
   updateUserBio: (userInput) => set(() => ({ userBio: userInput })),
 
-
   // TODO: I can just remove the 2 stats below and move them to the CreatePostModal component because I don't use them anywhere else
   postText: '',
   updatePostText: (userInput) =>
@@ -38,7 +37,7 @@ const useUserStore = create((set) => ({
   updatePostImagesURLs: (userInputImages) =>
     set(() => ({ postImagesURLs: userInputImages })),
 
-  userPosts: [],
+  userPosts: null,
   // fetchedPostData is an array of post objects
   updateUserPosts: (fetchedPostData) =>
     set(() => ({ userPosts: fetchedPostData })),
