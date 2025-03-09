@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useUserStoreSelectors } from '../stores/user-store';
 import PICTURES from '../assets/pictures';
 import {
@@ -27,6 +27,7 @@ import {
 
 const Home = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isLoading, setIsLoading] = useState(false);
 
   const userPosts = useUserStoreSelectors.use.userPosts();
   const updateUserPosts = useUserStoreSelectors.use.updateUserPosts();
@@ -40,6 +41,8 @@ const Home = () => {
 
   useEffect(() => {
     const getUserPosts = async () => {
+      setIsLoading(true);
+
       const user = await getUser();
       const userPostsDataJSON = await handleGettingPosts(user);
 
@@ -55,9 +58,8 @@ const Home = () => {
         images: post.images.map((img) => URL.createObjectURL(new Blob([img]))),
       }));
 
-      updateUserPosts(
-        postsWithBlobImgURLs.length > 0 ? postsWithBlobImgURLs : null,
-      );
+      updateUserPosts(postsWithBlobImgURLs);
+      setIsLoading(false);
     };
     getUserPosts();
 
@@ -100,7 +102,7 @@ const Home = () => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [updateUserPosts]);
+  }, [updateUserPosts, setIsLoading]);
 
   console.log('userPosts:', userPosts);
 
@@ -196,7 +198,9 @@ const Home = () => {
       </nav>
 
       <main className=''>
-        {userPosts && userPosts.length > 0 ? (
+        {isLoading ? (
+          <img src={PICTURES.loading} alt='loading' />
+        ) : userPosts && userPosts.length > 0 ? (
           userPosts.map((post, index) => (
             <div className='post-container m-14 border' key={`Post ${index}`}>
               <div className='images-container flex-warp flex'>

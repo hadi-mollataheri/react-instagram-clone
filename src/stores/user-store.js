@@ -37,7 +37,7 @@ const useUserStore = create((set) => ({
   updatePostImagesURLs: (userInputImages) =>
     set(() => ({ postImagesURLs: userInputImages })),
 
-  userPosts: null,
+  userPosts: [],
   // fetchedPostData is an array of post objects
   updateUserPosts: (fetchedPostData) =>
     set(() => ({ userPosts: fetchedPostData })),
