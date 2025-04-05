@@ -161,6 +161,11 @@ export const handleCreatePost = async (postText, postImages) => {
         'User not defined, user must be authenticated to create post.',
       );
     }
+
+    // First store the images to the supabase storage
+    // Then receive public URLs from those images
+    // Then store these URLs in the posts table along with postText
+
     // Insert post into the 'posts' table
     const { error } = await supabase.from('posts').insert({
       user_id: user.id,

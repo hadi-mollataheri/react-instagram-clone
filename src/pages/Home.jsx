@@ -46,65 +46,42 @@ const Home = () => {
       const user = await getUser();
       const userPostsDataJSON = await handleGettingPosts(user);
 
-      // Parse each image JSON string to object
+      // Assume that each post's images field is already an array of public URL strings.
+      // If stored as a JSON string in the database, parse it once; otherwise, use it directly.
       const parsedPosts = userPostsDataJSON.map((post) => ({
         ...post,
-        images: post.images.map((image) => JSON.parse(image)),
+        images:
+          typeof post.images === 'string'
+            ? JSON.parse(post.images)
+            : post.images,
       }));
 
-      // Transform the image objects to Blob URLs for rendering
-      const postsWithBlobImgURLs = parsedPosts.map((post) => ({
-        ...post,
-        images: post.images.map((img) => URL.createObjectURL(new Blob([img]))),
-      }));
-
-      updateUserPosts(postsWithBlobImgURLs);
+      // No need to create Blob URLs since images are now public URLs.
+      updateUserPosts(parsedPosts);
       setIsLoading(false);
     };
     getUserPosts();
 
-    // Subscribe to new post INSERT events via a realtime channel.
+    // Subscribe to new post INSERT events as before (and update accordingly if needed)
     const channel = supabase
       .channel('posts_updates')
       .on(
         'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'posts',
-        },
+        { event: 'INSERT', schema: 'public', table: 'posts' },
         (payload) => {
           console.log('New post inserted:', payload.new);
-
-          // Transform the new post to match our data format.
-          const transformNewPost = (post) => {
-            // Step 1: Parse each image JSON string so we get a JavaScript object.
-            // For each image stored in the post, do JSON.parse(image).
-            const parsedImages = post.images.map((image) => JSON.parse(image));
-            // Step 2: Convert each parsed image object into a Blob URL.
-            // new Blob([img]) creates a Blob from the parsed image, and URL.createObjectURL creates a URL for that Blob.
-            const blobImgURLs = parsedImages.map((img) =>
-              URL.createObjectURL(new Blob([img])),
-            );
-            // Return a new post object that has all original properties,
-            // but with its images property replaced by the array of Blob URLs.
-            return { ...post, images: blobImgURLs };
-          };
-
-          const newPost = transformNewPost(payload.new);
+          // Assuming the new post already contains an array of image URLs.
+          const newPost = payload.new;
           const currentPosts = postsRef.current;
           updateUserPosts([newPost, ...currentPosts]);
         },
       )
       .subscribe();
 
-    // Cleanup subscription on component unmount
     return () => {
       supabase.removeChannel(channel);
     };
   }, [updateUserPosts, setIsLoading]);
-
-  console.log('userPosts:', userPosts);
 
   return (
     <div className='mt-5 sm:grid sm:grid-cols-3 sm:grid-rows-1'>
@@ -202,11 +179,11 @@ const Home = () => {
           <img src={PICTURES.loading} alt='loading' />
         ) : userPosts && userPosts.length > 0 ? (
           userPosts.map((post, index) => (
-            <div className='post-container m-14 border' key={`Post ${index}`}>
+            <div className='post-container m-14 border' key={index + 1}>
               <div className='images-container flex-warp flex'>
-                {post.images.map((image, imageIndex) => (
+                {post.images.map((image, index) => (
                   <img
-                    key={`image ${imageIndex}`}
+                    key={`${post.id}-${index}`}
                     src={image || PICTURES.loading}
                     alt={post.content}
                     className='m-2 rounded object-cover'
