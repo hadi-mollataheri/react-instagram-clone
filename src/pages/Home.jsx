@@ -56,27 +56,48 @@ const Home = () => {
             : post.images,
       }));
 
-      // No need to create Blob URLs since images are now public URLs.
       updateUserPosts(parsedPosts);
       setIsLoading(false);
     };
     getUserPosts();
 
-    // Subscribe to new post INSERT events as before (and update accordingly if needed)
-    const channel = supabase
-      .channel('posts_updates')
-      .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'posts' },
-        (payload) => {
+    // Subscribe to new post events as before
+    const channel = supabase.channel('posts_updates');
+
+    channel.on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: 'posts' },
+      (payload) => {
+        // Determine what kind of operation occurred
+        if (payload.eventType === 'INSERT') {
           console.log('New post inserted:', payload.new);
-          // Assuming the new post already contains an array of image URLs.
           const newPost = payload.new;
           const currentPosts = postsRef.current;
+          // Add the new post to the first of existent posts array
           updateUserPosts([newPost, ...currentPosts]);
-        },
-      )
-      .subscribe();
+        } else if (payload.eventType === 'UPDATE') {
+          console.log('Post updated:', payload.new);
+          const updatedPost = payload.new;
+          const currentPosts = postsRef.current;
+          // Replace the existing post with the updated version
+          updateUserPosts(
+            currentPosts.map((post) =>
+              post.id === updatedPost.id ? updatedPost : post,
+            ),
+          );
+        } else if (payload.eventType === 'DELETE') {
+          console.log('Post deleted:', payload.old);
+          const deletedPost = payload.old;
+          const currentPosts = postsRef.current;
+          // Remove the deleted post from the existing state
+          updateUserPosts(
+            currentPosts.filter((post) => post.id !== deletedPost.id),
+          );
+        }
+      },
+    );
+
+    channel.subscribe();
 
     return () => {
       supabase.removeChannel(channel);
