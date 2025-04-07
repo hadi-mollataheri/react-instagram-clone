@@ -75,7 +75,7 @@ const CreatePostModal = ({ isOpen, onClose }) => {
 
         if (error) {
           console.error('Upload error:', error);
-          continue; // Optionally, handle the error (or abort the process).
+          throw error;
         }
         // Retrieve the public URL using the stored path.
         const publicUrlResponse = supabase.storage

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useUserStoreSelectors } from '../stores/user-store';
 import PICTURES from '../assets/pictures';
+import Post from '../components/Home/Post';
 import {
   UserCircle,
   List,
@@ -31,6 +32,8 @@ const Home = () => {
 
   const userPosts = useUserStoreSelectors.use.userPosts();
   const updateUserPosts = useUserStoreSelectors.use.updateUserPosts();
+
+  /* Test */ console.log('userPostS:', userPosts);
 
   // Create a ref to always have the latest userPosts value.
   const postsRef = useRef(userPosts);
@@ -199,23 +202,7 @@ const Home = () => {
         {isLoading ? (
           <img src={PICTURES.loading} alt='loading' />
         ) : userPosts && userPosts.length > 0 ? (
-          userPosts.map((post, index) => (
-            <div className='post-container m-14 border' key={index + 1}>
-              <div className='images-container flex-warp flex'>
-                {post.images.map((image, index) => (
-                  <img
-                    key={`${post.id}-${index}`}
-                    src={image || PICTURES.loading}
-                    alt={post.content}
-                    className='m-2 rounded object-cover'
-                  />
-                ))}
-              </div>
-              <div className='content-container'>
-                <p>{post.content}</p>
-              </div>
-            </div>
-          ))
+          userPosts.map((post) => <Post key={post.id} post={post} />)
         ) : (
           <h2 className='mt-32 text-center opacity-50 sm:mt-0 sm:pt-32'>
             No posts to show!
