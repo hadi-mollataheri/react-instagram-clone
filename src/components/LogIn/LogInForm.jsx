@@ -110,7 +110,7 @@ const LogInForm = () => {
         ></input>
         {/* Show password icon */}
         <div
-          onClick={() => updateShowPassword(!showPassword)}
+          onClick={() => updateShowPassword()}
           className='cursor-pointer rounded-r-md bg-zinc-900 pr-2'
         >
           {showPassword ? (

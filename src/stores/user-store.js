@@ -15,9 +15,9 @@ const useUserStore = create((set) => ({
   updateUserFullName: (userInput) => set(() => ({ userFullName: userInput })),
   username: '',
   updateUsername: (userInput) => set(() => ({ username: userInput })),
-  showPassword: false,
-  updateShowPassword: () =>
-    set((state) => ({ showPassword: !state.showPassword })),
+  // showPassword: false,
+  // updateShowPassword: () =>
+  //   set((state) => ({ showPassword: !state.showPassword })),
   userAvatar: defaultProfilePicture,
   updateUserAvatar: (userImportedPicture) =>
     set(() => ({

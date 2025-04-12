@@ -1,8 +1,18 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useUserPostStoreSelectors } from '../../stores/userPost-strore';
+import { Heart } from '@phosphor-icons/react';
 
 function Post({ post }) {
   const [imageIndex, setImageIndex] = useState(0);
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeCounter, setLikeCounter] = useState(0);
+  console.log('isLiked', isLiked);
+
+  console.log('likeCounter:', likeCounter);
+  // When isLiked state is true:
+  // Increment the likeCounter state
+  // Otherwise if the iLiked state is false decrement the likeCounter state
 
   const handleForward = () => {
     setImageIndex((prevIndex) =>
@@ -13,6 +23,14 @@ function Post({ post }) {
   const handleBackward = () => {
     setImageIndex((prevIndex) =>
       prevIndex === 0 ? post.images.length - 1 : prevIndex - 1,
+    );
+  };
+
+  const handleLikeButton = () => {
+    const newIsLiked = !isLiked; // Determine the new like state from the current state
+    setIsLiked(newIsLiked);
+    setLikeCounter((prevCounter) =>
+      newIsLiked ? prevCounter + 1 : Math.max(prevCounter - 1, 0),
     );
   };
 
@@ -41,8 +59,20 @@ function Post({ post }) {
           </>
         )}
       </div>
+      <div className='post-details pl-[5%]'>
+        <button onClick={handleLikeButton} className='pt-2'>
+          {/* Create buttons and detail below the image */}
+
+          <Heart
+            size={28}
+            weight='fill'
+            color={`${isLiked ? '#c20000' : '#ffffff'}`}
+          />
+        </button>
+        {likeCounter ? <p>{likeCounter} like(s)</p> : null}
+      </div>
       <div className='content-container'>
-        <p className='pl-[5.3%] pt-4 text-sm'>{post.content}</p>
+        <p className='pl-[5%] pt-4 text-sm'>{post.content}</p>
       </div>
     </div>
   );
