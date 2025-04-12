@@ -33,8 +33,6 @@ const Home = () => {
   const userPosts = useUserStoreSelectors.use.userPosts();
   const updateUserPosts = useUserStoreSelectors.use.updateUserPosts();
 
-  /* Test */ console.log('userPostS:', userPosts);
-
   // Create a ref to always have the latest userPosts value.
   const postsRef = useRef(userPosts);
 
@@ -109,7 +107,7 @@ const Home = () => {
 
   return (
     <div className='mt-5 sm:grid sm:grid-cols-3 sm:grid-rows-1'>
-      <nav className='sm flex items-center justify-between px-5 sm:h-lvh sm:w-52 sm:flex-col sm:items-start sm:justify-start sm:border-r-2 sm:border-r-gray-500'>
+      <nav className='sm flex items-center justify-between px-5 sm:w-52 sm:flex-col sm:items-start sm:justify-start sm:border-r-2 sm:border-r-gray-500'>
         <div id='logo-container'>
           <img src={PICTURES.logoColor} alt='instagram' className='w-32' />
         </div>
@@ -148,7 +146,7 @@ const Home = () => {
         </div>
         <div
           id='screen-menu'
-          className='hidden sm:flex sm:h-screen sm:flex-col sm:justify-between sm:py-10'
+          className='hidden sm:flex sm:h-screen sm:flex-col sm:items-start sm:justify-evenly sm:py-10'
         >
           <ul className='leading-[60px]'>
             <li>
