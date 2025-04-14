@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
 import { Eye, EyeSlash } from '@phosphor-icons/react';
@@ -8,6 +8,8 @@ import { useUserAuthStoreSelector } from '../../stores/userAuth-store';
 import { useUserProfileStoreSelector } from '../../stores/userProfile-store';
 
 const SignUpForm = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const userEmail = useUserAuthStoreSelector.use.userEmail();
   const updateUserEmail = useUserAuthStoreSelector.use.updateUserEmail();
   const userFullName = useUserProfileStoreSelector.use.userFullName();
@@ -36,6 +38,8 @@ const SignUpForm = () => {
   const handleSignUpClick = async (event) => {
     event.preventDefault();
 
+    setIsSubmitting(true);
+
     try {
       console.log('Calling handleSignUp...');
       const { user, error } = await handleSignUp(
@@ -44,6 +48,8 @@ const SignUpForm = () => {
         userFullName,
         username,
       );
+
+      console.log('user from signup page:', user);
 
       if (error) {
         if (error === 'Username already taken. Please choose another one.') {
@@ -55,7 +61,7 @@ const SignUpForm = () => {
           alert('An error occurred during sign up. Please try again.');
           console.error('Error during sign up:', error);
         }
-      } else if (user) {
+      } else  {
         // Update user state and inform the user
         alert(' Sign up successfully!');
         navigate('/');
@@ -70,6 +76,7 @@ const SignUpForm = () => {
       console.error('Unhandled error during sign up:', error);
       alert('An unexpected error occurred. Please try again.');
     }
+    setIsSubmitting(false);
   };
 
   return (
@@ -140,6 +147,8 @@ const SignUpForm = () => {
         colorScheme='blue'
         size='md'
         fontWeight={600}
+        isLoading={isSubmitting}
+        loadingText='Signing up'
       >
         Sign up
       </Button>

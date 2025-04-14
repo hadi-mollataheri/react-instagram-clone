@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
 import { handleLogIn } from '../../utilities/supabase-apiCalls.js';
@@ -7,6 +7,8 @@ import { Eye, EyeSlash } from '@phosphor-icons/react';
 import { useUserAuthStoreSelector } from '../../stores/userAuth-store.js';
 
 const LogInForm = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   // State for email input element
   const userEmail = useUserAuthStoreSelector.use.userEmail();
   // updateEmailInput is a handler for input that updates the emailInput state
@@ -56,6 +58,9 @@ const LogInForm = () => {
     const authTokenKey = 'sb-gylziklaowckktbcufys-auth-token';
     const prevAuthToken = localStorage.getItem(authTokenKey);
     updateSessionData(prevAuthToken);
+
+    setIsSubmitting(true);
+
     if (sessionData) {
       alert('You are already logged in!');
       navigate('/');
@@ -74,6 +79,8 @@ const LogInForm = () => {
         console.error('Error during handleLogIn:', error);
       }
     }
+
+    setIsSubmitting(false);
   };
 
   return (
@@ -130,6 +137,8 @@ const LogInForm = () => {
         colorScheme='blue'
         size='md'
         fontWeight={600}
+        isLoading={isSubmitting}
+        loadingText='Logging in'
       >
         Log in
       </Button>
