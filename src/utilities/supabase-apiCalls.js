@@ -118,7 +118,7 @@ export const handleLogIn = async (userEmail, userPassword) => {
   if (error) {
     console.error('Error during log in:', error);
     window.alert(`Log in failed: ${error.message}`);
-    // throw new Error('LogIn failed!');
+    throw new Error('LogIn failed!');
   } else {
     console.log('User successfully logged in');
     return data.session;
@@ -184,7 +184,7 @@ export const handleCreatePost = async (postText, postImages) => {
 export const handleGettingPosts = async (user) => {
   const { data, error } = await supabase
     .from('posts')
-    .select('content, images')
+    .select('id, content, images')
     .eq('user_id', user.id);
 
   if (error) {

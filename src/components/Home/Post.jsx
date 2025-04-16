@@ -1,11 +1,28 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
-import { Heart } from '@phosphor-icons/react';
+import { useState, useEffect } from 'react';
+import { Heart, ChatCircle } from '@phosphor-icons/react';
+import { getUser, supabase } from '../../utilities/supabase-apiCalls';
 
 function Post({ post }) {
   const [imageIndex, setImageIndex] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const [likeCounter, setLikeCounter] = useState(0);
+  const [currentUsername, setCurrentUsername] = useState('');
+
+  useEffect(() => {
+    const getCurrentUsername = async () => {
+      const user = await getUser();
+
+      if (user) {
+        const { data } = await supabase
+          .from('profiles')
+          .select('username')
+          .eq('id', user.id);
+        setCurrentUsername(data[0].username);
+      }
+    };
+    getCurrentUsername();
+  }, []);
 
   const handleForward = () => {
     setImageIndex((prevIndex) =>
@@ -38,13 +55,13 @@ function Post({ post }) {
         {post.images.length >= 2 && (
           <>
             <button
-              className='backward-button absolute left-5 top-1/2 h-8 w-8 -translate-y-1/2 transform rounded-full bg-slate-800 pb-1 text-lg font-bold leading-none opacity-50 hover:opacity-100 active:bg-slate-700 active:delay-[60ms]'
+              className='backward-button absolute left-5 top-1/2 h-8 w-8 -translate-y-1/2 transform rounded-full bg-slate-900 pb-1 text-xl font-bold leading-none opacity-70 hover:opacity-100 active:bg-slate-700 active:delay-[60ms]'
               onClick={handleBackward}
             >
               &#8592;
             </button>
             <button
-              className='forward-button absolute right-5 top-1/2 h-8 w-8 -translate-y-1/2 transform rounded-full bg-slate-800 pb-1 text-lg font-bold leading-none opacity-50 hover:opacity-100 active:bg-slate-700 active:delay-[60ms]'
+              className='forward-button absolute right-5 top-1/2 h-8 w-8 -translate-y-1/2 transform rounded-full bg-slate-900 pb-1 text-xl font-bold leading-none opacity-70 hover:opacity-100 active:bg-slate-700 active:delay-[60ms]'
               onClick={handleForward}
             >
               &#8594;
@@ -53,23 +70,29 @@ function Post({ post }) {
         )}
       </div>
       <div className='post-details pl-[5%]'>
-        <button onClick={handleLikeButton} className='pt-2'>
+        <button onClick={handleLikeButton} className='like-button mt-2'>
           {/* Create buttons and detail below the image */}
 
           <Heart
-            size={28}
+            size={24}
             weight='fill'
             color={`${isLiked ? '#c20000' : '#ffffff'}`}
           />
         </button>
+        <button className='chat-button pl-3'>
+          <ChatCircle size={24} />
+        </button>
         {likeCounter ? (
-          <p>
+          <p className='like-counter text-sm'>
             {likeCounter} like<small>(s)</small>
           </p>
         ) : null}
       </div>
       <div className='content-container'>
-        <p className='pl-[5%] pt-4 text-sm'>{post.content}</p>
+        <p className='pl-[5%] pt-2'>
+          <span className='pr-2 font-bold'>{currentUsername}</span>
+          {post.content}
+        </p>
       </div>
     </div>
   );
