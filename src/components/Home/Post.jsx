@@ -45,7 +45,7 @@ function Post({ post }) {
   };
 
   return (
-    <div className='post-container mx-auto my-12 flex max-w-96 flex-col'>
+    <div className='post-container mx-auto mb-16 mt-12 flex max-w-96 flex-col'>
       <div className='images-container relative flex items-center justify-center'>
         <img
           src={post.images[imageIndex]}
@@ -69,7 +69,7 @@ function Post({ post }) {
           </>
         )}
       </div>
-      <div className='post-details pl-[5%]'>
+      <div className='post-details pl-[5%] pr-[5%] leading-7'>
         <button onClick={handleLikeButton} className='like-button mt-2'>
           {/* Create buttons and detail below the image */}
 
@@ -87,12 +87,21 @@ function Post({ post }) {
             {likeCounter} like<small>(s)</small>
           </p>
         ) : null}
-      </div>
-      <div className='content-container'>
-        <p className='pl-[5%] pt-2'>
-          <span className='pr-2 font-bold'>{currentUsername}</span>
+
+        <p className='pt-2'>
+          <span className='pr-1 font-bold'>{currentUsername}</span>
           {post.content}
         </p>
+        <button className='opacity-60'>View all [*] comments</button>
+        <div className='quick-post flex justify-between pb-1'>
+          <input
+            placeholder='Add a comment ...'
+            className='w-full bg-transparent outline-none placeholder:opacity-50'
+            type='text'
+          ></input>
+          <button className='ml-3 opacity-80'>Post</button>
+        </div>
+        <hr />
       </div>
     </div>
   );
