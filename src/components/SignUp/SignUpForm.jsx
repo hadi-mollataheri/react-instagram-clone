@@ -61,10 +61,10 @@ const SignUpForm = () => {
           alert('An error occurred during sign up. Please try again.');
           console.error('Error during sign up:', error);
         }
-      } else  {
+      } else {
         // Update user state and inform the user
         alert(' Sign up successfully!');
-        navigate('/');
+        navigate('/home');
 
         // Clear form fields
         updateUserEmail('');

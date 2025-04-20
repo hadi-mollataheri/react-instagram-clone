@@ -113,7 +113,6 @@ export const handleLogIn = async (userEmail, userPassword) => {
     email: userEmail,
     password: userPassword,
   });
-  console.log('data obj in utility in handleLogIn:', data);
 
   if (error) {
     console.error('Error during log in:', error);

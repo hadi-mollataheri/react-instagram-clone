@@ -99,7 +99,7 @@ function Post({ post }) {
             className='w-full bg-transparent outline-none placeholder:opacity-50'
             type='text'
           ></input>
-          <button className='ml-3 opacity-80'>Post</button>
+          <button className='ml-3 opacity-80 active:opacity-100'>Post</button>
         </div>
         <hr />
       </div>

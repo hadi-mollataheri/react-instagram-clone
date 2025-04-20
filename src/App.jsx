@@ -7,8 +7,8 @@ function App() {
     <Router basename='/react-instagram-clone'>
       <div className='text-white'>
         <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='logIn' element={<LogIn />} />
+          <Route path='home' element={<Home />} />
+          <Route path='/' element={<LogIn />} />
           <Route path='signUp' element={<EmailSignUp />} />
         </Routes>
       </div>

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useUserStoreSelectors } from '../stores/user-store';
 import PICTURES from '../assets/pictures';
 import Post from '../components/Home/Post';
@@ -33,6 +34,8 @@ const Home = () => {
   const userPosts = useUserStoreSelectors.use.userPosts();
   const updateUserPosts = useUserStoreSelectors.use.updateUserPosts();
 
+  const navigate = useNavigate();
+
   // Create a ref to always have the latest userPosts value.
   const postsRef = useRef(userPosts);
 
@@ -41,6 +44,13 @@ const Home = () => {
   }, [userPosts]);
 
   useEffect(() => {
+    const authTokenKey = 'sb-gylziklaowckktbcufys-auth-token';
+    const authToken = localStorage.getItem(authTokenKey);
+    if (!authToken) {
+      window.alert('Please log in first!');
+      navigate('/');
+    }
+
     const getUserPosts = async () => {
       setIsLoading(true);
 

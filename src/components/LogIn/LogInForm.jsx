@@ -23,7 +23,6 @@ const LogInForm = () => {
 
   const sessionData = useUserAuthStoreSelector.use.sessionData();
   const updateSessionData = useUserAuthStoreSelector.use.updateSessionData();
-  console.log('sessionData from LogInForm: ', sessionData); // TEST
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -63,7 +62,7 @@ const LogInForm = () => {
 
     if (sessionData) {
       alert('You are already logged in!');
-      navigate('/');
+      navigate('/home');
     } else {
       try {
         console.log('Calling handleLogIn...');
@@ -74,7 +73,7 @@ const LogInForm = () => {
         const newAuthToken = localStorage.getItem(authTokenKey);
         // Change the value of sessionData state with newSession(newAuthToken) that it's type is JSON string
         updateSessionData(newAuthToken);
-        navigate('//');
+        navigate('/home');
       } catch (error) {
         console.error('Error during handleLogIn:', error);
       }
