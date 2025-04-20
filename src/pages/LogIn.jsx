@@ -21,7 +21,7 @@ function LogIn() {
         localStorage.removeItem('sb-gylziklaowckktbcufys-auth-token'); // Remove the token from local storage
         updateSessionData(null);
         window.alert('Session expired. Please log in again.');
-        navigate('/logIn');
+        navigate('/');
       }
     };
 

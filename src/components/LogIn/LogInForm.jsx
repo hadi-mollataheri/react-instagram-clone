@@ -38,7 +38,7 @@ const LogInForm = () => {
         localStorage.removeItem(authTokenKey);
         updateSessionData(null);
         window.alert('Session expired. Please log in again.');
-        navigate('/logIn');
+        navigate('/');
       }
     };
 
