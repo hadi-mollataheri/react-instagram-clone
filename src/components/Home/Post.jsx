@@ -58,13 +58,13 @@ function Post({ post }) {
               className='backward-button absolute left-5 top-1/2 h-9 w-9 -translate-y-1/2 transform rounded-full bg-slate-900 pb-1 text-xl font-bold leading-none opacity-70 hover:opacity-100 active:bg-slate-700 active:delay-[60ms] sm:left-[2%] sm:mx-[1px] sm:h-10 sm:w-10 xl:left-[6%]'
               onClick={handleBackward}
             >
-              &#8592;
+              {'<'}
             </button>
             <button
               className='forward-button absolute right-5 top-1/2 h-9 w-9 -translate-y-1/2 transform rounded-full bg-slate-900 pb-1 text-xl font-bold leading-none opacity-70 hover:opacity-100 active:bg-slate-700 active:delay-[60ms] sm:right-[2%] sm:mx-[1px] sm:h-10 sm:w-10 xl:right-[6%]'
               onClick={handleForward}
             >
-              &#8594;
+              {'>'}
             </button>
           </>
         )}
