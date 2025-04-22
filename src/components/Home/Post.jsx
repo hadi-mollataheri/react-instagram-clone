@@ -45,23 +45,23 @@ function Post({ post }) {
   };
 
   return (
-    <div className='post-container mx-auto mb-16 mt-12 flex max-w-96 flex-col'>
+    <div className='post-container mx-auto mb-16 mt-12 flex max-w-96 flex-col sm:max-w-[400px]'>
       <div className='images-container relative flex items-center justify-center'>
         <img
           src={post.images[imageIndex]}
           alt={post.content}
-          className='mx-2 h-48 w-[90%] rounded object-cover'
+          className='mx-2 h-[460px] w-[90%] rounded object-cover sm:h-[470px] sm:w-[360px]'
         />
         {post.images.length >= 2 && (
           <>
             <button
-              className='backward-button absolute left-5 top-1/2 h-8 w-8 -translate-y-1/2 transform rounded-full bg-slate-900 pb-1 text-xl font-bold leading-none opacity-70 hover:opacity-100 active:bg-slate-700 active:delay-[60ms]'
+              className='backward-button absolute left-5 top-1/2 h-9 w-9 -translate-y-1/2 transform rounded-full bg-slate-900 pb-1 text-xl font-bold leading-none opacity-70 hover:opacity-100 active:bg-slate-700 active:delay-[60ms] sm:left-[2%] sm:mx-[1px] sm:h-10 sm:w-10 xl:left-[6%]'
               onClick={handleBackward}
             >
               &#8592;
             </button>
             <button
-              className='forward-button absolute right-5 top-1/2 h-8 w-8 -translate-y-1/2 transform rounded-full bg-slate-900 pb-1 text-xl font-bold leading-none opacity-70 hover:opacity-100 active:bg-slate-700 active:delay-[60ms]'
+              className='forward-button absolute right-5 top-1/2 h-9 w-9 -translate-y-1/2 transform rounded-full bg-slate-900 pb-1 text-xl font-bold leading-none opacity-70 hover:opacity-100 active:bg-slate-700 active:delay-[60ms] sm:right-[2%] sm:mx-[1px] sm:h-10 sm:w-10 xl:right-[6%]'
               onClick={handleForward}
             >
               &#8594;
@@ -69,7 +69,7 @@ function Post({ post }) {
           </>
         )}
       </div>
-      <div className='post-details pl-[5%] pr-[5%] leading-7'>
+      <div className='post-details pl-[5%] pr-[5%] leading-7 sm:pl-0 xl:pl-5'>
         <button onClick={handleLikeButton} className='like-button mt-2'>
           {/* Create buttons and detail below the image */}
 
