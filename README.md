@@ -1,26 +1,52 @@
-# DISCLAIMER
+# Disclaimer
 
-The Supabase API key provided in this code is intended for
-demonstration purposes only and is associated with a specific project.
-It is **not** intended for reuse in other projects or contexts.
-Unauthorized use of this API key is strictly prohibited.
-Each user should create their own Supabase account and generate t
-heir own API keys for their projects. Misuse of this API key may
-lead to it being revoked, which could disrupt the functionality of
-the associated project. Please respect these guidelines. Thank you.
+The Supabase API key provided in this repository is for demonstration purposes only and is associated with a specific project. It is **not** intended for use in other projects or contexts. Unauthorized use of this API key is strictly prohibited.
 
-## Explanation
+**Important:** Each user should create their own Supabase account and generate their own API keys. Misuse of this API key may result in its revocation, disrupting the functionality of this project. Please adhere to these guidelines. Thank you.
 
-This is a _similar app to the instagram_ that I built with **ReactJS**.
+## Overview
 
-**Topics:** React state, react-router-dom and CSS styles.
+This project is an Instagram clone built with **ReactJS** (using [Vite](https://vitejs.dev/) as the development server) and is still under development. It showcases some of my coding abilities and serves as a personal learning tool rather than a commercial or marketing solution.
 
-**Notice:** This repository and web app is only for the demonstration of some my coding abilities, practicing and also learning and not for marketing and other business purposes.
+After dedicating several years to learning front-end web development, I embarked on this project as a series of ~practice exercises. My goal was to sharpen my skills and bolster my resume in preparation for the job market.
 
-I embarked on this project as a series of practice exercises after dedicating a couple of years to learning front-end web development. My goal was twofold: to enhance my coding skills and bolster my resume, ultimately preparing myself for the job market.
+## Technologies & Topics
 
-Project number: 13
+- **ReactJS**: Component architecture, state management (`useState`, `useRef`, `useEffect`)
+- **Zustand**: Lightweight React state management
+- **React Router DOM**: Client-side routing
+- **Supabase**: Backend services and database management
+- **Responsive Design**
+- **Chakra UI**
+- **Tailwind CSS**
+- **PostgreSQL**: Database schema design and table creation
 
-[**Click here to see this web app**](https://hadi-mollataheri.github.io/react-ecommerce-app/)
+## Features
 
----
+- **Authentication**
+
+  - Login with email & password
+  - Sign up and login with Google account _(under development; available for developer testing)_
+  - User registration with additional personal information
+
+- **Database & Data Management**
+
+  - Creation and management of tables for users, profiles, and posts
+  - Handling of data fetching and submission (e.g., post submission logic)
+  - Management of asynchronous code execution for robust state updates
+
+- **User Interface & Experience**
+  - Visual loading states for submission buttons
+  - Session expiration handling
+  - Modal for image selection with preview option
+  - Real-time updates for post creation, deletion, and modifications
+  - Row Level Security for tables to control permitted operations
+  - Form validation to prevent empty posts with clear guidance messages
+  - Image carousel for navigating through post images
+  - Notifications preventing repetitive or invalid login/sign-up attempts
+
+## Project Details
+
+**Project Number:** 13
+
+[**Click here to see the live web app**](https://hadi-mollataheri.github.io/react-instagram-clone/)
