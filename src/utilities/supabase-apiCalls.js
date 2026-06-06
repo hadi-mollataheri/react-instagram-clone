@@ -1,6 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
-
-const projectUrl = 'https://gylziklaowckktbcufys.supabase.co';
+// new: https://xnygjzgwrrfawgurgwnh.supabase.co
+//old: 'https://gylziklaowckktbcufys.supabase.co'
+const projectUrl = 'https://xnygjzgwrrfawgurgwnh.supabase.co';
 /*
 **DISCLAIMER**: The Supabase API key provided in this code is intended for
   demonstration purposes only and is associated with a specific project. 
@@ -11,8 +12,11 @@ const projectUrl = 'https://gylziklaowckktbcufys.supabase.co';
   lead to it being revoked, which could disrupt the functionality of 
   the associated project. Please respect these guidelines. Thank you.
 */
-const publicKey =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd5bHppa2xhb3dja2t0YmN1ZnlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjI2NjQ5MzgsImV4cCI6MjAzODI0MDkzOH0.Z61I3csvPrhKOiGRoRCmh4cJdiKxQRbOh-N_Mi4vFo0';
+
+// new: sb_publishable_Bntj6opv8-jkTFf3YhfCjw_eyIskYEw
+//old:   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd5bHppa2xhb3dja2t0YmN1ZnlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjI2NjQ5MzgsImV4cCI6MjAzODI0MDkzOH0.Z61I3csvPrhKOiGRoRCmh4cJdiKxQRbOh-N_Mi4vFo0';
+
+const publicKey = 'sb_publishable_Bntj6opv8-jkTFf3YhfCjw_eyIskYEw';
 export const supabase = createClient(projectUrl, publicKey);
 
 // Sign up users(Used in handler for sing up link)
