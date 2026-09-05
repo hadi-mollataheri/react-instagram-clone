@@ -51,3 +51,9 @@ After dedicating several years to front-end web development, I embarked on this 
 **Project Number:** 13
 
 [**Click here to see the live web app**](https://hadi-mollataheri.github.io/react-instagram-clone/)
+
+## Screenshots
+
+![Screenshot](./src/assets/Screenshot%201.png)
+![Screenshot](./src/assets/Screenshot%202.png)
+![Screenshot](./src/assets/Screenshot%203.png)
